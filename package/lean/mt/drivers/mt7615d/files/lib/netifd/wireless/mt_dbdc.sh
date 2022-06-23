@@ -719,7 +719,7 @@ StationKeepAlive=0
 DfsCalibration=0
 DfsEnable=1
 DfsApplyStopWifi=0
-DfsZeroWait=0
+DfsZeroWait=1
 DfsZeroWaitCacTime=255
 DfsLowerLimit=0
 DfsUpperLimit=0
@@ -1072,10 +1072,10 @@ EOF
 	echo "Pending..."
 	if lock -n $WIFI_OP_LOCK; then
 		sleep 1
-		RA_MAIN_UP=$(get_if_stat ra0 || get_if_stat rax0)
+		RA_MAIN_UP=$(get_if_stat ra0)
 		drv_mt_dbdc_teardown $phy_name
 		RESET_IF=$(mt_dbdc_vif_down $phy_name)
-		echo "MT_DBDC:ra0:rax0:$RA_MAIN_UP.Later we'll restart $(echo ${RESET_IF} | tr '\n' ' ')"
+		echo "MT_DBDC:rax0:$RA_MAIN_UP.Later we'll restart $(echo ${RESET_IF} | tr '\n' ' ')"
 		sleep 1
 
 #Start root device
