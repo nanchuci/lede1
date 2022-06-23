@@ -113,7 +113,6 @@ hostapd_common_add_device_config() {
 	config_add_int rssi_reject_assoc_rssi
 	config_add_int rssi_ignore_probe_request
 	config_add_int maxassoc
-	config_add_boolean vendor_vht
 
 	config_add_string acs_chan_bias
 	config_add_array hostapd_options
@@ -131,7 +130,7 @@ hostapd_prepare_device_config() {
 
 	json_get_vars country country3 country_ie beacon_int:100 dtim_period:2 doth require_mode legacy_rates \
 		acs_chan_bias local_pwr_constraint spectrum_mgmt_required airtime_mode cell_density \
-		rts_threshold beacon_rate rssi_reject_assoc_rssi rssi_ignore_probe_request maxassoc vendor_vht
+		rts_threshold beacon_rate rssi_reject_assoc_rssi rssi_ignore_probe_request maxassoc
 
 	hostapd_set_log_options base_cfg
 
@@ -200,7 +199,6 @@ hostapd_prepare_device_config() {
 				set_default rate_list "24000 36000 48000 54000"
 				set_default basic_rate_list "24000"
 			fi
-			[ -n "$vendor_vht" ] && append base_cfg "vendor_vht=$vendor_vht" "$N"
 		;;
 		a)
 			if [ "$cell_density" -eq 1 ]; then
@@ -337,6 +335,7 @@ hostapd_common_add_bss_config() {
 	config_add_int sae_pwe
 
 	config_add_string 'owe_transition_bssid:macaddr' 'owe_transition_ssid:string'
+	config_add_string owe_transition_ifname
 
 	config_add_boolean iw_enabled iw_internet iw_asra iw_esr iw_uesa
 	config_add_int iw_access_network_type iw_venue_group iw_venue_type
@@ -637,10 +636,11 @@ hostapd_set_bss_options() {
 
 	case "$auth_type" in
 		none|owe)
-			json_get_vars owe_transition_bssid owe_transition_ssid
+			json_get_vars owe_transition_bssid owe_transition_ssid owe_transition_ifname
 
 			[ -n "$owe_transition_ssid" ] && append bss_conf "owe_transition_ssid=\"$owe_transition_ssid\"" "$N"
 			[ -n "$owe_transition_bssid" ] && append bss_conf "owe_transition_bssid=$owe_transition_bssid" "$N"
+			[ -n "$owe_transition_ifname" ] && append bss_conf "owe_transition_ifname=$owe_transition_ifname" "$N"
 
 			wps_possible=1
 			# Here we make the assumption that if we're in open mode
@@ -741,6 +741,25 @@ hostapd_set_bss_options() {
 			hostapd_append_wep_key bss_conf
 			append bss_conf "wep_default_key=$wep_keyidx" "$N"
 			[ -n "$wep_rekey" ] && append bss_conf "wep_rekey_period=$wep_rekey" "$N"
+		;;
+	esac
+
+	case "$auth_type" in
+		none|owe|psk|sae|psk-sae|wep)
+			json_get_vars \
+			auth_server auth_port auth_secret \
+			ownip radius_client_addr
+
+			[ -n "$auth_server" ] &&  {
+				set_default auth_port 1812
+
+				append bss_conf "auth_server_addr=$auth_server" "$N"
+				append bss_conf "auth_server_port=$auth_port" "$N"
+				[ -n "$auth_secret" ] && append bss_conf "auth_server_shared_secret=$auth_secret" "$N"
+				[ -n "$ownip" ] && append bss_conf "own_ip_addr=$ownip" "$N"
+				[ -n "$radius_client_addr" ] && append bss_conf "radius_client_addr=$radius_client_addr" "$N"
+				append bss_conf "macaddr_acl=2" "$N"
+			}
 		;;
 	esac
 

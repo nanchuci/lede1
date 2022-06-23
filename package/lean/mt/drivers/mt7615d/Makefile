@@ -242,10 +242,44 @@ define KernelPackage/mt7615d/install
 endef
 
 define KernelPackage/mt7615d_dbdc/install
+	$(INSTALL_DIR) $(1)/bin/
+	$(INSTALL_DIR) $(1)/etc/init.d/
+	$(INSTALL_DIR) $(1)/lib/wifi/
+	$(INSTALL_DIR) $(1)/etc/wireless/
+	$(INSTALL_DIR) $(1)/etc_ro/wlan/
+	$(INSTALL_DIR) $(1)/etc_ro/Wireless/RT2860AP/
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/wifi/
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/firmware/
+	$(INSTALL_DIR) $(1)/lib/preinit/
 	$(INSTALL_DIR) $(1)/lib/wifi $(1)/lib/netifd/wireless $(1)/etc/uci-defaults
+	$(INSTALL_BIN) ./src/bin/mt7615/SingleSKU.dat $(1)/etc_ro/Wireless/RT2860AP/
+	$(INSTALL_BIN) ./src/bin/mt7615/SingleSKU_BF.dat $(1)/etc_ro/Wireless/RT2860AP/
+	$(INSTALL_BIN) ./src/bin/mt7615/wps_pbc $(1)/bin/
+	$(INSTALL_BIN) ./src/bin/mt7615/l1profile.dat $(1)/etc/wireless/
+	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_EEPROM1.bin $(1)/etc_ro/wlan/
+	$(INSTALL_BIN) ./src/bin/mt7615/11-mtk-wifi-e2p $(1)/etc/hotplug.d/firmware/
 	$(INSTALL_DATA) ./files/lib/wifi/mt_dbdc.sh $(1)/lib/wifi
 	$(INSTALL_BIN) ./files/lib/netifd/wireless/mt_dbdc.sh $(1)/lib/netifd/wireless
+	$(INSTALL_DATA) ./files/wlan/001-wifi.sh $(1)/etc/hotplug.d/wifi/
 	$(INSTALL_DATA) ./files/etc/uci-defaults/10_mt7615_dbdc $(1)/etc/uci-defaults/10_mt7615_dbdc
+	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
+	cp \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/mt7615_patch_e3_hdr.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_noReOrdering.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain_20141024_1.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain_20150206_1_asic.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_E1.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_plain.bin \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/ePAeLNA \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/ePAiLNA \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/iPAeLNA \
+		$(PKG_BUILD_DIR)/src/bin/mt7615/iPAiLNA \
+		$(1)/lib/firmware/mediatek
+	$(INSTALL_BIN) ./src/bin/mt7615/91_load_wifi.sh $(1)/lib/preinit/91_load_wifi
+	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/lib/preinit/firmware
 endef
 
 $(eval $(call KernelPackage,mt7615d))

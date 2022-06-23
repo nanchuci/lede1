@@ -19,6 +19,7 @@ append DRIVERS "mt_dbdc"
 mt_get_first_if_mac() {
 	local wlan_mac=""
 	factory_part=$(find_mtd_part factory)
+	[ -z "$factory_part" ] && factory_part=$(find_mtd_part Factory)
 	dd bs=1 skip=4 count=6 if=$factory_part 2>/dev/null | /usr/sbin/maccalc bin2mac	
 }
 

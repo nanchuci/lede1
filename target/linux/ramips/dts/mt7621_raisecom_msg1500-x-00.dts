@@ -15,6 +15,10 @@
 		led-upgrade = &led_usb;
 	};
 
+	chosen {
+		bootargs = "console=ttyS0,57600";
+	};
+
 	leds {
 		compatible = "gpio-leds";
 
