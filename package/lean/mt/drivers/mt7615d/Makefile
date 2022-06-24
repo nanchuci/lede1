@@ -264,19 +264,19 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DATA) ./files/etc/uci-defaults/10_mt7615_dbdc $(1)/etc/uci-defaults/10_mt7615_dbdc
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	cp \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/mt7615_patch_e3_hdr.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_noReOrdering.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain_20141024_1.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/MT7615_cr4_plain_20150206_1_asic.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_E1.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_plain.bin \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/ePAeLNA \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/ePAiLNA \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/iPAeLNA \
-		$(PKG_BUILD_DIR)/src/bin/mt7615/iPAiLNA \
+		$(PKG_NAME)/src/bin/mt7615/MT7615_cr4.bin \
+		$(PKG_NAME)/src/bin/mt7615/mt7615_patch_e3_hdr.bin \
+		$(PKG_NAME)/src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin \
+		$(PKG_NAME)/src/bin/mt7615/MT7615_cr4_noReOrdering.bin \
+		$(PKG_NAME)/src/bin/mt7615/MT7615_cr4_plain.bin \
+		$(PKG_NAME)/src/bin/mt7615/MT7615_cr4_plain_20141024_1.bin \
+		$(PKG_NAME)/src/bin/mt7615/MT7615_cr4_plain_20150206_1_asic.bin \
+		$(PKG_NAME)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_E1.bin \
+		$(PKG_NAME)/src/bin/mt7615/WIFI_RAM_CODE_MT7615_plain.bin \
+		$(PKG_NAME)/src/bin/mt7615/ePAeLNA \
+		$(PKG_NAME)/src/bin/mt7615/ePAiLNA \
+		$(PKG_NAME)/src/bin/mt7615/iPAeLNA \
+		$(PKG_NAME)/src/bin/mt7615/iPAiLNA \
 		$(1)/lib/firmware/mediatek
 	$(INSTALL_BIN) ./src/bin/mt7615/91_load_wifi.sh $(1)/lib/preinit/91_load_wifi
 	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/lib/preinit/firmware
