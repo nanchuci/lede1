@@ -193,7 +193,7 @@ define KernelPackage/mt7615d
   KCONFIG:= \
 	CONFIG_PCI_MSI=y \
 	CONFIG_NET_SCH_FQ=y
-ifneq ($(CONFIG_MTK_WHNAT_SUPPORT),y)
+ifneq ($(CONFIG_MTK_WHNAT_SUPPORT),)
   FILES:=$(PKG_BUILD_DIR)/mt_wifi_ap/mt_wifi.ko \
 	$(PKG_BUILD_DIR)/mt_wifi/embedded/plug_in/whnat/mt_whnat.ko
   AUTOLOAD:=$(call AutoProbe,mt_wifi mt_whnat)
