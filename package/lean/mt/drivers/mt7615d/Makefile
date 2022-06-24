@@ -245,6 +245,7 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DIR) $(1)/bin/
 	$(INSTALL_DIR) $(1)/etc/init.d/
 	$(INSTALL_DIR) $(1)/etc/config/
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/net/
 	$(INSTALL_DIR) $(1)/lib/wifi/
 	$(INSTALL_DIR) $(1)/etc/wireless/
 	$(INSTALL_DIR) $(1)/etc_ro/wlan/
