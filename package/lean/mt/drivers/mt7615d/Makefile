@@ -302,7 +302,7 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_BIN) ./src/bin/mt7615/iPAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAiLNA/
 	$(INSTALL_BIN) ./src/bin/mt7615/91_load_wifi.sh $(1)/lib/preinit/91_load_wifi
 	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/etc/init.d/firmware
-	$(INSTALL_BIN) ./src/bin/mt7615/hwacc $(1)/lib/init.d/
+	$(INSTALL_BIN) ./src/bin/mt7615/hwacc $(1)/etc/init.d/
 	$(INSTALL_BIN) ./src/bin/mt7615/mtkwifi $(1)/etc/init.d/
 endef
 
