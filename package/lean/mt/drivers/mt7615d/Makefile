@@ -260,7 +260,7 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_BIN) ./src/bin/mt7615/11-mtk-wifi-e2p $(1)/etc/hotplug.d/firmware/
 	$(INSTALL_DATA) ./files/lib/wifi/mt_dbdc.sh $(1)/lib/wifi
 	$(INSTALL_BIN) ./files/lib/netifd/wireless/mt_dbdc.sh $(1)/lib/netifd/wireless
-	$(INSTALL_DATA) ./files/wlan/001-wifi.sh $(1)/etc/hotplug.d/wifi/
+	$(INSTALL_DATA) ./src/bin/mt7615/001-wifi.sh $(1)/etc/hotplug.d/wifi/
 	$(INSTALL_DATA) ./files/etc/uci-defaults/10_mt7615_dbdc $(1)/etc/uci-defaults/10_mt7615_dbdc
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	cp \
