@@ -67,7 +67,7 @@ local debug = 0
                 <td>
                     <input type="text" name="ApCliSsid" id="ApCliSsid" value="<%=cfgs.ApCliSsid%>"/>
                 </td>
-                <td></td>
+                <td><span style="color:red;">自动承接上级写入</span></td
             </tr>
             <tr>
                 <td>上级无线信道</td>
@@ -96,7 +96,7 @@ local debug = 0
                         <% end %>
                     </select>
                 </td>
-                <td></td>
+                <td><span style="color:red;">自动承接上级写入</span></td
             </tr>
             </tbody>
             <tbody id="apcli_wpa"<% if cfgs.ApCliAuthMode ~= "WPA2PSK" then %> style="display: none;"<% end %>>
@@ -110,14 +110,14 @@ local debug = 0
                     <% end %>
                     </select>
                 </td>
-                <td></td>
+                <td><span style="color:red;">自动承接上级写入</span></td
             </tr>
             <tr>
                 <td>上级无线密码</td>
                 <td>
                     <input type="text" name="ApCliWPAPSK" id="ApCliWPAPSK" value="<%=cfgs.ApCliWPAPSK%>"/>
                 </td>
-                <td></td>
+                <td><span style="color:green;">手动输入</span></td>
             </tr>
             </tbody>
             <tbody id="apcli_wep"<% if cfgs.ApCliAuthMode ~= "WEP" then %> style="display: none;"<% end %>>
@@ -131,7 +131,7 @@ local debug = 0
                     <% end %>
                     </select>
                 </td>
-                <td></td>
+                <td><span style="color:red;">自动承接上级写入</span></td>
             </tr>
             <tr>
                 <td>上级无线密码</td>
@@ -139,7 +139,7 @@ local debug = 0
                     <input type="text" name="ApCliKey1Str" id="ApCliKey1Str" value="<%=cfgs.ApCliKey1Str%>"/>
                     <input type="hidden" name="ApCliDefaultKeyID" value="1"/>
                 </td>
-                <td></td>
+                <td><span style="color:green;">手动输入</span></td>
             </tr>
             </tbody>
         </table>
@@ -205,7 +205,7 @@ local debug = 0
              || aplist[i].authmode == "WPAPSK"
              || aplist[i].authmode == "WPA2PSK"
              || aplist[i].authmode == "WPAPSKWPA2PSK") {
-                td5.innerHTML = '<a href="javascript:choose_rootap(\''+i+'\')" >启用</a>';
+                td5.innerHTML = '<a href="javascript:choose_rootap(\''+i+'\')" >选择启用</a>';
 
             } else {
                 td5.innerHTML = 'Security Not Supported';

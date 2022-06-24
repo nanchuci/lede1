@@ -66,7 +66,7 @@ if next(diff) ~= nil then
                     <select style="width:auto; min-width:180px;" name="Channel" id="Channel" onchange="Channel_onchange(this.value)" <% if cfgs.ApCliEnable == "1" then %> disabled="disabled" <% end %>>
                     </select>
                 </td>
-                <td><% if cfgs.ApCliEnable == "1" then %> APClient/Repeater Mode. <% end %></td>
+                <td><% if cfgs.ApCliEnable == "1" then %> 无线中继模式. <% end %></td>
             </tr>
             <tr>
                 <td>区域代码</td>
@@ -78,13 +78,14 @@ if next(diff) ~= nil then
                         <option value="TW" id="advCountryCodeTW" <% if cfgs.CountryCode == "TW" then %> selected="selected"<% end %>>TW (Taiwan)</option>
                         <option value="IE" id="advCountryCodeIE" <% if cfgs.CountryCode == "IE" then %> selected="selected"<% end %>>IE (Ireland)</option>
                         <option value="HK" id="advCountryCodeHK" <% if cfgs.CountryCode == "HK" then %> selected="selected"<% end %>>HK (Hong Kong)</option>
+                        <option value="CN" id="advCountryCodeCN" <% if cfgs.CountryCode == "CN" then %> selected="selected"<% end %>>CN (China)</option>                        
                         <option value="NONE" id="advCountryCodeNONE"<% if cfgs.CountryCode == "NONE" then %> checked="checked"<% end %>>NONE</option>
                     </select>
                 </td>
                 <td></td>
             </tr>
             <tr>
-                <td>Country Region</td>
+                <td>信道参数选择</td>
                 <td>
                     <select style="width:auto; min-width:180px;" name="__cr" id="__cr" onchange="CountryRegion_onchange(this.value)">
                     </select>
@@ -105,12 +106,12 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.HT_GI then %>
             <tr>
-                <td>HT Guard Interval</td>
+                <td>HT报头类型</td>
                 <td>
                     <select style="width:auto" name="HT_GI">
-                        <option value="0" <% if cfgs.HT_GI == "0" then %> selected="selected"<% end%>>Long</option>
-                        <option value="1" <% if cfgs.HT_GI == "1" then %> selected="selected"<% end%>>Short</option>
-                        <option value="2" <% if cfgs.HT_GI == "2" then %> selected="selected"<% end%>>Auto</option>
+                        <option value="0" <% if cfgs.HT_GI == "0" then %> selected="selected"<% end%>>长</option>
+                        <option value="1" <% if cfgs.HT_GI == "1" then %> selected="selected"<% end%>>短</option>
+                        <option value="2" <% if cfgs.HT_GI == "2" then %> selected="selected"<% end%>>自动</option>
                     </select>
                 </td>
                 <td></td>
@@ -137,20 +138,20 @@ if next(diff) ~= nil then
                     <select style="width:auto; min-width:180px;" name="HT_EXTCHA" id="HT_EXTCHA" <% if cfgs.ApCliEnable == "1" or dev.__bw ~= "40" or dev.__bw ~= "60" then %> disabled="disabled" <% end %>>
                     </select>
                 </td>
-                <td><% if cfgs.ApCliEnable == "1" then %> APClient/Repeater Mode. <% end %></td>
+                <td><% if cfgs.ApCliEnable == "1" then %> 无线中继模式. <% end %></td>
             </tr>
             <tr>
-                <td>5G 2nd 80Mhz Channel</td>
+                <td>5G 80Mhz模式辅助信道</td>
                 <td>
                     <select style="width:auto; min-width:180px;" name="VHT_Sec80_Channel" id="VHT_Sec80_Channel" <% if cfgs.ApCliEnable == "1" or dev.__bw ~= "180" then %> disabled="disabled" <% end %>>
                     </select>
                 </td>
-                <td><% if cfgs.ApCliEnable == "1" then %> APClient/Repeater Mode. <% end %></td>
+                <td><% if cfgs.ApCliEnable == "1" then %> 无线中继模式. <% end %></td>
             </tr>
             <% end %>
             <% if cfgs.HT_STBC then %>
             <tr>
-                <td>STBC</td>
+                <td>启用STBC</td>
                 <td>
                     <input type="radio" name="HT_STBC" value="1" <% if cfgs.HT_STBC == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="HT_STBC" value="0" <% if cfgs.HT_STBC == "0" then %> checked="checked"<% end %>/> 禁用
@@ -160,7 +161,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.HT_AMSDU then %>
             <tr>
-                <td>A-MSDU</td>
+                <td>启用AMSDU</td>
                 <td>
                     <input type="radio" name="HT_AMSDU" value="1" <% if cfgs.HT_AMSDU == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="HT_AMSDU" value="0" <% if cfgs.HT_AMSDU == "0" then %> checked="checked"<% end %>/> 禁用
@@ -213,8 +214,8 @@ if next(diff) ~= nil then
                 <td>VHT Short GI</td>
                 <td>
                     <select style="width:auto" name="VHT_SGI">
-                        <option value="0" <% if cfgs.VHT_SGI == "0" then %> selected="selected"<% end%>>Long</option>
-                        <option value="1" <% if cfgs.VHT_SGI == "1" then %> selected="selected"<% end%>>Short</option>
+                        <option value="0" <% if cfgs.VHT_SGI == "0" then %> selected="selected"<% end%>>长</option>
+                        <option value="1" <% if cfgs.VHT_SGI == "1" then %> selected="selected"<% end%>>短</option>
                     </select>
                 </td>
                 <td></td>
@@ -232,11 +233,11 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.VHT_BW_SIGNAL then %>
             <tr>
-                <td>VHT BW Signaling</td>
+                <td>VHT信令间隔</td>
                 <td>
                     <input type="radio" name="VHT_BW_SIGNAL" value="1" <% if cfgs.VHT_BW_SIGNAL == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="VHT_BW_SIGNAL" value="0" <% if cfgs.VHT_BW_SIGNAL == "0" then %> checked="checked"<% end %>/> 禁用
-                    <input type="radio" name="VHT_BW_SIGNAL" value="0" <% if cfgs.VHT_BW_SIGNAL == "2" then %> checked="checked"<% end %>/> Dynamic
+                    <input type="radio" name="VHT_BW_SIGNAL" value="0" <% if cfgs.VHT_BW_SIGNAL == "2" then %> checked="checked"<% end %>/> 动态
                 </td>
                 <td></td>
             </tr>
@@ -253,12 +254,12 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.BGProtection then %>
             <tr>
-                <td>BG Protection Mode</td>
+                <td>BG保护模式</td>
                 <td>
                     <select name="BGProtection" style="width:auto">
-                        <option value="0" <% if cfgs.BGProtection == "0" then %>selected="selected"<% end %>>Auto</option>
-                        <option value="1" <% if cfgs.BGProtection == "1" then %>selected="selected"<% end %>>Always On</option>
-                        <option value="2" <% if cfgs.BGProtection == "2" then %>selected="selected"<% end %>>Always Off</option>
+                        <option value="0" <% if cfgs.BGProtection == "0" then %>selected="selected"<% end %>>自动</option>
+                        <option value="1" <% if cfgs.BGProtection == "1" then %>selected="selected"<% end %>>总是打开</option>
+                        <option value="2" <% if cfgs.BGProtection == "2" then %>selected="selected"<% end %>>总是关闭</option>
                     </select>
                 </td>
                 <td></td>
@@ -266,7 +267,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.VHT_BW then %>
             <tr>
-                <td>HT Protection</td>
+                <td>HT保护</td>
                 <td>
                     <input type="radio" name="HT_PROTECT" value="1" <% if cfgs.HT_PROTECT == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="HT_PROTECT" value="0" <% if cfgs.HT_PROTECT == "0" then %> checked="checked"<% end %>/> 禁用
@@ -276,7 +277,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.BeaconPeriod then %>
             <tr>
-                <td>Beacon Interval</td>
+                <td>Beacon信标周期</td>
                 <td>
                     <input name="BeaconPeriod" value="<%=cfgs.BeaconPeriod%>" />ms(范围 20-999, 默认值 100)
                 </td>
@@ -285,7 +286,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.DtimPeriod then %>
             <tr>
-                <td>Data Beacon Rate (DTIM)</td>
+                <td>DTIM间隔</td>
                 <td>
                     <input name="DtimPeriod" value="<%=cfgs.DtimPeriod%>" />ms(范围 1-255, 默认值 1)
                 </td>
@@ -294,7 +295,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.FragThreshold then %>
             <tr>
-                <td>Fragment Threshold</td>
+                <td>分片阈值</td>
                 <td>
                     <input name="FragThreshold" value="<%=cfgs.FragThreshold%>" />(范围 256-2346, 默认值 2346)
                 </td>
@@ -303,7 +304,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.RTSThreshold then %>
             <tr>
-                <td>RTS Threshold</td>
+                <td>RTS阈值</td>
                 <td>
                     <input name="RTSThreshold" value="<%=cfgs.RTSThreshold%>" />(范围 256-2347, 默认值 2347)
                 </td>
@@ -312,7 +313,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.TxPower then %>
             <tr>
-                <td>TX Power</td>
+                <td>发射功率</td>
                 <td>
                     <input name="TxPower" value="<%=cfgs.TxPower%>" />dbm(范围 1-100, 默认值 100)
                 </td>
@@ -321,7 +322,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.TxPreamble then %>
             <tr>
-                <td>Short Preamble</td>
+                <td>Tx前导码</td>
                 <td>
                     <input type="radio" name="TxPreamble" value="1" <% if cfgs.TxPreamble == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="TxPreamble" value="0" <% if cfgs.TxPreamble == "0" then %> checked="checked"<% end %>/> 禁用
@@ -331,7 +332,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.ShortSlot then %>
             <tr>
-                <td>Short Slot</td>
+                <td>帧间间隔</td>
                 <td>
                     <input type="radio" name="ShortSlot" value="1" <% if cfgs.ShortSlot == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="ShortSlot" value="0" <% if cfgs.ShortSlot == "0" then %> checked="checked"<% end %>/> 禁用
@@ -341,7 +342,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.TxBurst then %>
             <tr>
-                <td>TX Burst</td>
+                <td>开启TX Burst功能</td>
                 <td>
                     <input type="radio" name="TxBurst" value="1" <% if cfgs.TxBurst == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="TxBurst" value="0" <% if cfgs.TxBurst == "0" then %> checked="checked"<% end %>/> 禁用
@@ -351,7 +352,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.PktAggregate then %>
             <tr>
-                <td>Packet Aggregate</td>
+                <td>启用包聚合</td>
                 <td>
                     <input type="radio" name="PktAggregate" value="1" <% if cfgs.PktAggregate == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="PktAggregate" value="0" <% if cfgs.PktAggregate == "0" then %> checked="checked"<% end %>/> 禁用
@@ -361,7 +362,7 @@ if next(diff) ~= nil then
             <% end %>
             <% if cfgs.IEEE80211H then %>
             <tr>
-                <td>802.11H</td>
+                <td>启用802.11H</td>
                 <td>
                     <input type="radio" name="IEEE80211H" value="1" <% if cfgs.IEEE80211H == "1" then %> checked="checked"<% end %>/> 启用
                     <input type="radio" name="IEEE80211H" value="0" <% if cfgs.IEEE80211H == "0" then %> checked="checked"<% end %>/> 禁用
