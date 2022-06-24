@@ -1,0 +1,5 @@
+#!/bin/sh
+[ -f /etc/config/hwacc0 ] && exit 0
+[ -f /lib/modules/$kernel_version/mtkhnat.ko ] && echo "config hwnat" > /etc/config/hwacc0
+[ -f /lib/modules/$kernel_version/hw_crypto.ko ] && echo "config hwcrypto" >> /etc/config/hwacc0
+exit 0

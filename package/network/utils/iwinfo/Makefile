@@ -41,7 +41,7 @@ endef
 
 define Package/libiwinfo/description
   Wireless information library with simplified API for Broadcom,
-  nl80211 and wext driver interfaces.
+  nl80211, mt_dbdc and wext driver interfaces.
 endef
 
 
@@ -112,7 +112,6 @@ endef
 define Package/libiwinfo/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libiwinfo.so.$(IWINFO_ABI_VERSION) $(1)/usr/lib/libiwinfo.so.$(IWINFO_ABI_VERSION)
-	$(LN) libiwinfo.so.$(IWINFO_ABI_VERSION) $(1)/usr/lib/libiwinfo.so
 endef
 
 define Package/libiwinfo-lua/install

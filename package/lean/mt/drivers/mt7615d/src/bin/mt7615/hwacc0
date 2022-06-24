@@ -1,0 +1,7 @@
+
+config hwnat
+	option enabled '1'
+	option tcp_offload '1'
+	option udp_offload '1'
+	option wifi_offload '1'
+

@@ -244,6 +244,7 @@ endef
 define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DIR) $(1)/bin/
 	$(INSTALL_DIR) $(1)/etc/init.d/
+	$(INSTALL_DIR) $(1)/etc/config/
 	$(INSTALL_DIR) $(1)/lib/wifi/
 	$(INSTALL_DIR) $(1)/etc/wireless/
 	$(INSTALL_DIR) $(1)/etc_ro/wlan/
@@ -263,10 +264,15 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_BIN) ./src/bin/mt7615/l1profile.dat $(1)/etc/wireless/
 	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_EEPROM1.bin $(1)/etc_ro/wlan/
 	$(INSTALL_BIN) ./src/bin/mt7615/11-mtk-wifi-e2p $(1)/etc/hotplug.d/firmware/
+	$(INSTALL_DATA) ./src/bin/mt7615/hwacc0 $(1)/etc/config/
+	$(INSTALL_DATA) ./src/bin/mt7615/002-hwacc $(1)/etc/hotplug.d/net/
 	$(INSTALL_DATA) ./files/lib/wifi/mt_dbdc.sh $(1)/lib/wifi
 	$(INSTALL_BIN) ./files/lib/netifd/wireless/mt_dbdc.sh $(1)/lib/netifd/wireless
 	$(INSTALL_DATA) ./src/bin/mt7615/001-wifi.sh $(1)/etc/hotplug.d/wifi/
 	$(INSTALL_DATA) ./files/etc/uci-defaults/10_mt7615_dbdc $(1)/etc/uci-defaults/10_mt7615_dbdc
+	$(INSTALL_DATA) ./src/bin/mt7615/99-hwacc $(1)/etc/uci-defaults/
+	$(INSTALL_DATA) ./src/bin/mt7615/luci-hwacc $(1)/etc/uci-defaults/
+	$(INSTALL_DATA) ./src/bin/mt7615/luci-i18n-hwacc-zh-cn $(1)/etc/uci-defaults/
 	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4.bin $(1)/lib/firmware/mediatek/
 	$(INSTALL_BIN) ./src/bin/mt7615/mt7615_patch_e3_hdr.bin $(1)/lib/firmware/mediatek/
 	$(INSTALL_BIN) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin $(1)/lib/firmware/mediatek/
@@ -281,7 +287,9 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_BIN) ./src/bin/mt7615/iPAeLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAeLNA/
 	$(INSTALL_BIN) ./src/bin/mt7615/iPAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAiLNA/
 	$(INSTALL_BIN) ./src/bin/mt7615/91_load_wifi.sh $(1)/lib/preinit/91_load_wifi
-	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/lib/preinit/firmware
+	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/etc/init.d/firmware
+	$(INSTALL_BIN) ./src/bin/mt7615/hwacc $(1)/lib/init.d/
+	$(INSTALL_BIN) ./src/bin/mt7615/mtkwifi $(1)/etc/init.d/
 endef
 
 $(eval $(call KernelPackage,mt7615d))

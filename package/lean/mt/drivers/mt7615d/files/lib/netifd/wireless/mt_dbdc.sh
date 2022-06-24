@@ -12,7 +12,6 @@
 # 	嘿，对着屏幕的哥们,为了表示对原作者辛苦工作的尊重，任何引用跟借用都不允许你抹去所有作者的信息,请保留这段话。
 #
 . /lib/netifd/netifd-wireless.sh
-. /lib/netifd/hostapd.sh
 
 init_wireless_driver "$@"
 
@@ -105,7 +104,7 @@ drv_mt_dbdc_init_iface_config() {
 	config_add_boolean wds
 	config_add_int max_listen_int
 	config_add_int dtim_period
-	config_add_int disassoc_low_ack rssiassoc
+	config_add_int rssikick rssiassoc
 	config_add_string wdsenctype wdskey wdsphymode
 	config_add_int wdswepid wdstxmcs
 
@@ -130,7 +129,7 @@ mt_dbdc_ap_vif_pre_config() {
 	local name="$1"
 
 	json_select config
-	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macfilter
+	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macfilter
 	json_get_values maclist maclist
 	json_select ..
 	[ "$disabled" == "1" ] && return
@@ -217,43 +216,18 @@ mt_dbdc_ap_vif_pre_config() {
 		echo "Key3Str${ApBssidNum}=${key3}" >> $RTWIFI_PROFILE_PATH
 		echo "Key4Str${ApBssidNum}=${key4}" >> $RTWIFI_PROFILE_PATH
 		ApDefKId="${ApDefKId}${key};"
-		;;
+	;;
 	none|open)
 		ApAuthMode="${ApAuthMode}OPEN;"
 		ApEncrypType="${ApEncrypType}NONE;"
 		ApDefKId="${ApDefKId}1;"
-		;;
+	;;
 	esac
 	ApHideESSID="${ApHideESSID}${hidden:-0};"
 	ApK1Tp="${ApK1Tp}${K1Tp:-0};"
 	ApK2Tp="${ApK2Tp}${K2Tp:-0};"
 	ApK3Tp="${ApK3Tp}${K3Tp:-0};"
 	ApK4Tp="${ApK4Tp}${K4Tp:-0};"
-
-	mt_cmd ifconfig $ifname up
-	mt_cmd echo "Interface $ifname now up."
-	mt_cmd iwpriv $ifname set NoForwarding=${isolate:-0}
-	mt_cmd iwpriv $ifname set IEEE80211H=${doth:-0}
-	if [ "$wps" == "pbc" ] || [ "$wps" == "pin" ]  && [ "$encryption" != "none" ]; then
-		echo "Enable WPS for ${ifname}."
-		mt_cmd iwpriv $ifname set WscConfMode=4
-		mt_cmd iwpriv $ifname set WscConfStatus=2
-		mt_cmd iwpriv $ifname set WscMode=2
-		mt_cmd iwpriv $ifname set WscV2Support=0
-	else
-		mt_cmd iwpriv $ifname set WscConfMode=0
-	fi
-	[ -n "$disassoc_low_ack" ]  && [ "$disassoc_low_ack" != "0" ] && mt_cmd iwpriv $ifname set KickStaRssiLow=$disassoc_low_ack
-	[ -n "$rssiassoc" ]  && [ "$rssiassoc" != "0" ] && mt_cmd iwpriv $ifname set AssocReqRssiThres=$rssiassoc
-	[ -n "$ieee80211k" ]  && [ "$ieee80211k" != "0" ] && mt_cmd iwpriv $ifname set rrmenable=1
-	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmenable=1
-	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1
-	if [ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ]; then
-		echo "Enable FT for ${ifname}."
-		mt_cmd iwpriv $ifname set ftenable=1 && FtSupport=1
-	else
-		mt_cmd iwpriv $ifname set ftenable=0 && FtSupport=0
-	fi
 }
 
 mt_dbdc_wds_vif_pre_config() {
@@ -300,7 +274,7 @@ mt_dbdc_sta_vif_pre_config() {
 	killall  $APCLI_APCTRL
 	[ ! -z "$key" ] && APCTRL_KEY_ARG="-k"
 	[ ! -z "$bssid" ] && APCTRL_BSS_ARG="-b $(echo $bssid | tr 'A-Z' 'a-z')"
-	mt_cmd $APCLI_APCTRL ra0 && rax0${RTWIFI_IFPREFIX}0 connect -s "$ssid" $APCTRL_BSS_ARG $APCTRL_KEY_ARG "$key"
+	mt_cmd $APCLI_APCTRL ra && rax${RTWIFI_IFPREFIX}0 connect -s "$ssid" $APCTRL_BSS_ARG $APCTRL_KEY_ARG "$key"
 }
 
 mt_dbdc_wds_vif_post_config() {
@@ -323,7 +297,7 @@ mt_dbdc_ap_vif_post_config() {
 	local name="$1"
 
 	json_select config
-	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w
+	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w
 	json_select ..
 
 	[ "$disabled" == "1" ] && return
@@ -333,7 +307,34 @@ mt_dbdc_ap_vif_post_config() {
 	ifname="ra${RTWIFI_IFPREFIX}${ApIfCNT}"
 	let ApIfCNT+=1
 
+	mt_cmd ifconfig $ifname up
+	mt_cmd echo "Interface $ifname now up."
+	mt_cmd iwpriv $ifname set NoForwarding=${isolate:-0}
+	mt_cmd iwpriv $ifname set IEEE80211H=${doth:-0}
+	
+	[ "$smart" == "1" ] && iwpriv $ifname set DynamicRaInterval=1
+
+	if [ "$wps" == "pbc" ] || [ "$wps" == "pin" ]  && [ "$encryption" != "none" ]; then
+		echo "Enable WPS for ${ifname}."
+		mt_cmd iwpriv $ifname set WscConfMode=4
+		mt_cmd iwpriv $ifname set WscConfStatus=2
+		mt_cmd iwpriv $ifname set WscMode=2
+		mt_cmd iwpriv $ifname set WscV2Support=0
+	else
+		mt_cmd iwpriv $ifname set WscConfMode=0
+	fi
+	[ -n "$rssikick" ]  && [ "$rssikick" != "0" ] && mt_cmd iwpriv $ifname set KickStaRssiLow=$rssikick
+	[ -n "$rssiassoc" ]  && [ "$rssiassoc" != "0" ] && mt_cmd iwpriv $ifname set AssocReqRssiThres=$rssiassoc
+	[ -n "$ieee80211k" ]  && [ "$ieee80211k" != "0" ] && mt_cmd iwpriv $ifname set rrmenable=1
+	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmenable=1
+	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=1 && mt_cmd iwpriv $ifname set ftsupport=1
+	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1 && mt_cmd iwpriv $ifname set ppenable=1
 	wireless_add_vif "$name" "$ifname"
+	json_get_vars bridge
+	[ -z `brctl show | grep $ifname` ] && [ ! -z $bridge ] && {
+		echo "Manually bridge interface $ifname into $bridge"
+		brctl addif $bridge $ifname 
+	}
 }
 
 mt_dbdc_sta_vif_post_config() {
@@ -350,10 +351,10 @@ mt_dbdc_sta_vif_post_config() {
 	[ "$disabled" == "1" ] && return
 	[ -z "${RTWIFI_IFPREFIX}" ] && [ "$ApIfCNT" == "0" ] && {
 		#FIXME: need ra0 and rax0 up before apcli0 and apclix0 start
-		ifconfig ra0 && rax0${RTWIFI_IFPREFIX}0 up
+		ifconfig ra && rax${RTWIFI_IFPREFIX}0 up
 		ifconfig $APCLI_IF up
-		iwpriv ra0 && rax0${RTWIFI_IFPREFIX}0 set DisConnectAllSta=1 2>/dev/null
-		ifconfig ra0 && rax0${RTWIFI_IFPREFIX}0 down
+		iwpriv ra && rax${RTWIFI_IFPREFIX}0 set DisConnectAllSta=1 2>/dev/null
+		ifconfig ra && rax${RTWIFI_IFPREFIX}0 down
 	}
 	let stacount+=1
 
@@ -362,7 +363,7 @@ mt_dbdc_sta_vif_post_config() {
 	[ ! -z "$bssid" ] && APCTRL_BSS_ARG="-b $(echo $bssid | tr 'A-Z' 'a-z')"
 
 	[ -n "$(which $APCLI_APCTRL)" ] && {
-		mt_cmd $APCLI_APCTRL -i ra0 && rax0${RTWIFI_IFPREFIX}0 -s "$ssid" $APCTRL_BSS_ARG $APCTRL_KEY_ARG "$key"
+		mt_cmd $APCLI_APCTRL -i ra && rax${RTWIFI_IFPREFIX}0 -s "$ssid" $APCTRL_BSS_ARG $APCTRL_KEY_ARG "$key"
 	} || {
 		mt_cmd iwpriv $APCLI_IF set ApCliEnable=0
 		mt_cmd iwpriv $APCLI_IF set ApCliSsid="$ssid"
@@ -437,7 +438,7 @@ drv_mt_dbdc_setup() {
 	json_get_vars main_if macaddr channel mode hwmode wmm htmode \
 		txpower country macfilter maclist greenap \
 		diversity frag rts txburst distance hidden \
-		disabled maxassoc noscan ht_coex smart #device所有配置项
+		disabled maxassoc macfilter maclist noscan ht_coex smart #device所有配置项
 		
 	json_get_vars \
 			ldpc:1 \
@@ -492,18 +493,18 @@ drv_mt_dbdc_setup() {
 			RTWIFI_CMD_PATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_5g.sh"
 			RTWIFI_CMD_OPATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_2g.sh"
 		;;
-#		ra0usb)
-#			WirelessMode=9
-#			APCLI_IF="apcliusb0"
-#			APCLI_APCTRL="apcli_2g"
-#			RTWIFI_IFPREFIX="usb"
-#		;;
-#		rax0usb)
-#			WirelessMode=14
-#			APCLI_IF="apclixusb0"
-#			APCLI_APCTRL="apcli_5g"
-#			RTWIFI_IFPREFIX="usb"
-#		;;
+		ra0usb)
+			WirelessMode=9
+			APCLI_IF="apcli0usb0"
+			APCLI_APCTRL="apcli_2g"
+			RTWIFI_IFPREFIX="usb"
+		;;
+		rax0usb)
+			WirelessMode=14
+			APCLI_IF="apclix0usb0"
+			APCLI_APCTRL="apcli_5g"
+			RTWIFI_IFPREFIX="usb"
+		;;
 		*)
 			echo "Unknown phy:$phy_name"
 			return 1
@@ -615,7 +616,7 @@ drv_mt_dbdc_setup() {
 				channel=149
 				AutoChannelSelect=2
 			}
-			ACSSKIP="36;38;40;42;44;46;48;52;56;60;64;68;72;76;80;84;88;92;96;100;104;108;112;116;120;124;128;132;136;140;165;169;173;177;181"
+			ACSSKIP="36;38;40;42;44;46;48;52;56;60;64;100;104;108;112;116;120;124;128;132;136;140;165"
 		;;
 		g)
 			EXTCHA=0
@@ -670,12 +671,12 @@ RxAntenna=${RxAntenna:-2};${RxAntenna:-2};${RxAntenna:-4};${RxAntenna:-4}
 TxPreamble=1
 RTSThreshold=${rts:-2347};${rts:-2347}
 FragThreshold=${frag:-2346};${frag:-2346}
-TxBurst=${txburst:-1};${txburst:-1};${txburst:-1};${txburst:-1}
+TxBurst=${txburst:-0}
 PktAggregate=1
 AutoProvisionEn=0
 FreqDelta=0
 TurboRate=0
-WmmCapable=${wmm:-1};${wmm:-1};${wmm:-1};${wmm:-1}
+WmmCapable=${wmm:-0};${wmm:-0}
 APAifsn=3;7;1;1
 APCwmin=4;4;3;2
 APCwmax=6;10;4;3
@@ -717,9 +718,9 @@ CSPeriod=6
 RDRegion=
 StationKeepAlive=0
 DfsCalibration=0
-DfsEnable=1
+DfsEnable=0;1
 DfsApplyStopWifi=0
-DfsZeroWait=1
+DfsZeroWait=0;1
 DfsZeroWaitCacTime=255
 DfsLowerLimit=0
 DfsUpperLimit=0
@@ -852,9 +853,14 @@ RADIUS_Acct_Port=1813
 RADIUS_Acct_Key=
 own_ip_addr=
 Ethifname=
-EAPifname=
-PreAuthifname=
+EAPifname=br-lan
+PreAuthifname=br-lan
 session_timeout_interval=0
+SREnable=1
+SRMode=0
+SRSDEnable=1
+PPEnable=${PPEnable:-0};${PPEnable:-0}
+KernelRps=1
 idle_timeout_interval=0
 WiFiTest=0
 TGnWifiTest=0
@@ -950,6 +956,8 @@ VOW_WATF_Q_LV3=
 VOW_WMM_Search_Rule_Band0=
 VOW_WMM_Search_Rule_Band1=
 CP_SUPPORT=2
+MapMode=0
+MboSupport=1
 EDCCAEnable=1
 BandSteering=0
 BndStrgRssiDiff=15
@@ -957,7 +965,7 @@ BndStrgRssiLow=-86
 BndStrgAge=600000
 BndStrgHoldTime=3000
 BndStrgCheckTime=6000
-SCSEnable=1
+#SCSEnable=1
 DyncVgaEnable=1
 SkipLongRangeVga=0
 VgaClamp=0
@@ -965,7 +973,7 @@ FastRoaming=0
 AutoRoaming=0
 FtSupport=${FtSupport:-0};${FtSupport:-0};${FtSupport:-0};${FtSupport:-0}
 FtRic=1;1;1;1
-FtOtd=0;0;0;0
+FtOtd=1;1;1;1
 FtMdId1=A1
 FtMdId2=A2
 FtMdId3=A3
@@ -1071,11 +1079,11 @@ EOF
 #加锁
 	echo "Pending..."
 	if lock -n $WIFI_OP_LOCK; then
-		sleep 1
+		sleep 2
 		RA_MAIN_UP=$(get_if_stat ra0)
 		drv_mt_dbdc_teardown $phy_name
 		RESET_IF=$(mt_dbdc_vif_down $phy_name)
-		echo "MT_DBDC:rax0:$RA_MAIN_UP.Later we'll restart $(echo ${RESET_IF} | tr '\n' ' ')"
+		echo "MT_DBDC:ra0:$RA_MAIN_UP.Later we'll restart $(echo ${RESET_IF} | tr '\n' ' ')"
 		sleep 1
 
 #Start root device

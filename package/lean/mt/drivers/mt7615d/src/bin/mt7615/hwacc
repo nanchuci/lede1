@@ -1,0 +1,55 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2015 PandoraBox Team
+
+START=96
+
+HWNAT_OPTION=""
+
+load_hwnat() {
+	local enabled
+
+	config_get_bool enabled $1 enabled 0
+
+	if [ "$enabled" = "1" ]; then
+		insmod mtkhnat
+	else
+		rmmod mtkhnat
+	fi
+}
+
+load_hwcrypto() {
+	local enabled
+
+	config_get_bool enabled $1 enabled 0
+
+	if [ "$enabled" = "1" ]; then
+		insmod hw_crypto
+		return
+	fi
+}
+
+
+start() {
+	stop
+	
+  	config_load hwacc
+	[ -f /lib/modules/$kernel_version/mtkhnat.ko ] && {
+		config_foreach load_hwnat hwnat
+	}
+	[ -f /lib/modules/$kernel_version/hw_crypto.ko ] && {
+		config_foreach load_hwcypto hwcypto
+	}
+
+}
+
+
+stop() {
+	[ -f /lib/modules/$kernel_version/mtkhnat.ko ] && {
+		rmmod mtkhnat
+	}
+	
+	[ -f /lib/modules/$kernel_version/hw_crypto.ko ] && {
+		rmmod hw_crypto
+	}
+
+}
