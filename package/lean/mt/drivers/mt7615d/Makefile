@@ -287,19 +287,19 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DATA) ./src/bin/mt7615/99-hwacc $(1)/etc/uci-defaults/
 	$(INSTALL_DATA) ./src/bin/mt7615/luci-hwacc $(1)/etc/uci-defaults/
 	$(INSTALL_DATA) ./src/bin/mt7615/luci-i18n-hwacc-zh-cn $(1)/etc/uci-defaults/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/mt7615_patch_e3_hdr.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4_noReOrdering.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4_plain.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4_plain_20141024_1.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_cr4_plain_20150206_1_asic.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615_E1.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615_plain.bin $(1)/lib/firmware/mediatek/
-	$(INSTALL_BIN) ./src/bin/mt7615/ePAeLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/ePAeLNA/
-	$(INSTALL_BIN) ./src/bin/mt7615/ePAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/ePAiLNA/
-	$(INSTALL_BIN) ./src/bin/mt7615/iPAeLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAeLNA/
-	$(INSTALL_BIN) ./src/bin/mt7615/iPAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAiLNA/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/mt7615_patch_e3_hdr.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4_noReOrdering.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4_plain.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4_plain_20141024_1.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4_plain_20150206_1_asic.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615_E1.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615_plain.bin $(1)/lib/firmware/mediatek/
+	$(INSTALL_DATA) ./src/bin/mt7615/ePAeLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/ePAeLNA/
+	$(INSTALL_DATA) ./src/bin/mt7615/ePAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/ePAiLNA/
+	$(INSTALL_DATA) ./src/bin/mt7615/iPAeLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAeLNA/
+	$(INSTALL_DATA) ./src/bin/mt7615/iPAiLNA/MT7615_EEPROM.bin $(1)/lib/firmware/mediatek/iPAiLNA/
 	$(INSTALL_BIN) ./src/bin/mt7615/91_load_wifi.sh $(1)/lib/preinit/91_load_wifi
 	$(INSTALL_BIN) ./src/bin/mt7615/firmware.sh $(1)/etc/init.d/firmware
 	$(INSTALL_BIN) ./src/bin/mt7615/hwacc $(1)/etc/init.d/
