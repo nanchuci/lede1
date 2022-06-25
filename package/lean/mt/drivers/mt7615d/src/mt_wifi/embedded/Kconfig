@@ -196,14 +196,14 @@ config TXBF_SUPPORT
 config FAST_NAT_SUPPORT
        bool "Fast-NAT support"
        depends on RA_HW_NAT_WIFI
-       default y
+       default n
 
 config WHNAT_SUPPORT
 	tristate "Wifi Hardware NAT support"
 	depends on CHIP_MT7615E
 	depends on WLAN_HOOK
 	depends on FAST_NAT_SUPPORT
-	default y
+	default n
 
 #config LLTD_SUPPORT
 #	bool "LLTD (Link Layer Topology Discovery Protocol)"

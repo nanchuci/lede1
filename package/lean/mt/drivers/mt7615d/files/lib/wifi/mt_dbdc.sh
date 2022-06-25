@@ -5,6 +5,7 @@
 # Copyright (c) 2005-2015, lintel <lintel.huang@gmail.com>
 # Copyright (c) 2013, Hoowa <hoowa.sun@gmail.com>
 # Copyright (c) 2015-2017, GuoGuo <gch981213@gmail.com>
+# Copyright (c) 2021-2022, Nanchuci <nanchuci023gmail.com>
 #
 # 	Detect script for MT7615 DBDC mode
 #
@@ -32,14 +33,14 @@ detect_mt_dbdc() {
 			[ "$type" == "mt_dbdc" ] || {
 				case $phyname in
 					ra0)
-						hwmode=11g
+						band=2g
 						htmode=HT20
 						pb_smart=1
 						noscan=0
 						ssid="OpenWRT-2.4G-$(echo $macaddr | awk -F ":" '{print $4""$5""$6 }'| tr a-z A-Z)"
 						;;
 					rax0)
-						hwmode=11a
+						band=5g
 						htmode=VHT80
 						ssid="OpenWRT-5G-$(maccalc add $macaddr 3145728 | awk -F ":" '{print $4""$5""$6 }'| tr a-z A-Z)"
 						pb_smart=0
@@ -47,17 +48,48 @@ detect_mt_dbdc() {
 						;;
 				esac
 				
-#				[ -n "$macaddr" ] && {
-#					dev_id="set wireless.${phyname}.macaddr=${macaddr}"
-#				}
+				if [ -n "$macaddr" ]; then
+					dev_id="set wireless.${phyname}.macaddr=${macaddr}"
+				else
+					dev_id="set wireless.${phyname}.macaddr=$(cat /sys/class/ieee80211/${dev}/macaddress)"
+				fi
+				}
+
+				get_band_defaults() {
+					local phy="$1"
+
+					for c in $(__get_band_defaults "$phy"); do
+						local band="${c%%:*}"
+						c="${c#*:}"
+						local chan="${c%%:*}"
+						c="${c#*:}"
+						local mode="${c%%:*}"
+
+						case "$band" in
+							1) band=2g;;
+							2) band=5g;;
+							3) band=60g;;
+							4) band=6g;;
+							*) band="";;
+						esac
+
+						[ -n "$band" ] || continue
+						[ -n "$mode_band" -a "$band" = "6g" ] && return
+
+						mode_band="$band"
+						channel="$chan"
+						htmode="$mode"
+					done
+				}
+
 				uci -q batch <<-EOF
 					set wireless.${phyname}=wifi-device
 					set wireless.${phyname}.type=mt_dbdc
-					set wireless.${phyname}.hwmode=$hwmode
+					set wireless.${phyname}.band=${mode_band}
 					set wireless.${phyname}.channel=auto
 					set wireless.${phyname}.txpower=100
 					set wireless.${phyname}.htmode=$htmode
-					set wireless.${phyname}.country=CN
+					set wireless.${phyname}.country=US
 					set wireless.${phyname}.txburst=1
 					set wireless.${phyname}.noscan=$noscan
 					set wireless.${phyname}.smart=$pb_smart

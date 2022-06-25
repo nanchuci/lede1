@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 
-chmod 0755 /sbin/mtkwifi
+chmod 0755 /etc/init.d/mtkwifi
 
 START=15
 STOP=15

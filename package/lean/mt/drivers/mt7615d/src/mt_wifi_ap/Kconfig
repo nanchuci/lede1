@@ -289,7 +289,7 @@ config BAND_STEERING
 
 config LED_CONTROL_SUPPORT
         bool "LED Control Support"
-        default y
+        default n
 
 config WLAN_HOOK
        bool "WLAN hook Support"
