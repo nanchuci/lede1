@@ -330,8 +330,8 @@ config MTK_TXBF_SUPPORT
 
 config MTK_FAST_NAT_SUPPORT
     bool "Fast-NAT support"
-    depends on MTK_RA_HW_NAT_WIFI
-    default y
+#	depends on MTK_RA_HW_NAT_WIFI
+    default n
 
 config MTK_WHNAT_SUPPORT
 	tristate "Wifi Hardware NAT support"
@@ -339,7 +339,7 @@ config MTK_WHNAT_SUPPORT
 	depends on MTK_WLAN_HOOK
 	depends on MTK_FAST_NAT_SUPPORT
 	select PACKAGE_kmod-hw_nat
-	default y
+	default n
 
 #config MTK_LLTD_SUPPORT
 #	bool "LLTD (Link Layer Topology Discovery Protocol)"
@@ -462,11 +462,11 @@ config MTK_LINK_TEST_SUPPORT
 	depends on MTK_WIFI_DRIVER
 	default n
 
-config MTK_LED_CONTROL_SUPPORT
-	bool "LED Support"
-	depends on MTK_WIFI_DRIVER
-	depends on MTK_MT_AP_SUPPORT
-	default y
+#config MTK_LED_CONTROL_SUPPORT
+#	bool "LED Support"
+#	depends on MTK_WIFI_DRIVER
+#	depends on MTK_MT_AP_SUPPORT
+#	default n
 
 config MTK_ATE_SUPPORT
 	bool "ATE/QA Support"
@@ -900,8 +900,8 @@ config MTK_BAND_STEERING
 	default y
 
 config MTK_LED_CONTROL_SUPPORT
-	bool "LED Control Support"
-	default y
+        bool "LED Control Support"
+        default n
 
 config MTK_WLAN_HOOK
        bool "WLAN hook Support"
