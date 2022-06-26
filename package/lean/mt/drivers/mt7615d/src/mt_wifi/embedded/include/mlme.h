@@ -958,6 +958,18 @@ typedef struct _CIPHER_SUITE {
 	BOOLEAN bMixMode; /* Indicate Pair & Group cipher might be different */
 } CIPHER_SUITE, *PCIPHER_SUITE;
 
+struct GNU_PACKED map_vendor_ie
+{
+	UCHAR type;
+	UCHAR subtype;
+	UCHAR root_distance;
+	UCHAR connectivity_to_controller;
+	USHORT uplink_rate;
+	UCHAR uplink_bssid[MAC_ADDR_LEN];
+	UCHAR bssid_5g[MAC_ADDR_LEN];
+	UCHAR bssid_2g[MAC_ADDR_LEN];
+};
+
 struct _vendor_ie_cap {
 	ULONG ra_cap;
 	ULONG mtk_cap;
@@ -1605,6 +1617,13 @@ typedef struct GNU_PACKED _FRAME_FTM_ACTION {
 	UCHAR ToaErr[2];
 	/*TODO: three optional present IE. (LCI, LCivic, FTM IE)*/
 } FRAME_FTM_ACTION, *PFRAME_FTM_ACTION;
+
+typedef struct GNU_PACKED _EID_STRUCT {
+	UCHAR   Eid;
+	UCHAR   Len;
+	UCHAR   Octet[1];
+} EID_STRUCT, *PEID_STRUCT, BEACON_EID_STRUCT, *PBEACON_EID_STRUCT;
+
 
 /* ========================== AP mlme.h =============================== */
 #define TBTT_PRELOAD_TIME 384 /* usec. LomgPreamble + 24-byte at 1Mbps */
