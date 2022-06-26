@@ -1191,7 +1191,7 @@ VOID PeerPublicAction(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 #endif /* CONFIG_AP_SUPPORT */
 
 	case ACTION_WIFI_DIRECT:
-/* #ifdef DPP_SUPPORT
+#ifdef DPP_SUPPORT
 		if (NdisEqualMemory(&(Elem->Msg[LENGTH_802_11 + 2]), DPP_OUI,
 				    OUI_LEN) &&
 		    Elem->Msg[LENGTH_802_11 + 5] == WFA_DPP_SUBTYPE) {
