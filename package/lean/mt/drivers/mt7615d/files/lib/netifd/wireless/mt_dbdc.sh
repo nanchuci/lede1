@@ -92,15 +92,15 @@ drv_mt_dbdc_init_device_config() {
 drv_mt_dbdc_init_iface_config() { 
 	config_add_boolean disabled
 	config_add_string mode bssid ssid encryption
-	config_add_boolean hidden isolated doth ieee80211k
-	config_add_boolean hidden isolated doth ieee80211v
-	config_add_boolean hidden isolated doth ieee80211r
-	config_add_boolean hidden isolated doth ieee80211w
+	config_add_boolean hidden isolate doth ieee80211k
+	config_add_boolean hidden isolate doth ieee80211v
+	config_add_boolean hidden isolate doth ieee80211r
+	config_add_boolean hidden isolate doth ieee80211w
 	config_add_boolean wds powersave enable
 	config_add_string key key1 key2 key3 key4
 	config_add_string wps
 	config_add_string pin
-	config_add_string macpolicy
+	config_add_string macfilter
 	config_add_string wds_bridge
 	config_add_array maclist
 	
@@ -135,7 +135,7 @@ mt_dbdc_ap_vif_pre_config() {
 	local name="$1"
 
 	json_select config
-	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolated doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macpolicy
+	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macpolicy
 	json_get_values maclist maclist
 	json_select ..
 	[ "$disabled" == "1" ] && return
@@ -144,7 +144,7 @@ mt_dbdc_ap_vif_pre_config() {
 
 	#MAC过滤方式相关设定 由于编号问题......我扔在这了......
 	ra_maclist="${maclist// /;};"
-	case "$macpolicy" in
+	case "$macfilter" in
 	allow)
 		echo "Interface ${ifname} has MAC Policy.Allow list:${ra_maclist}"
 		echo "AccessPolicy${ApBssidNum}=1" >> $RTWIFI_PROFILE_PATH
@@ -247,7 +247,8 @@ mt_dbdc_wds_vif_pre_config() {
 	json_select ..
 	[ "$disabled" == "1" ] && return
 	[ $WDSBssidNum -gt 3 ] && return
-	echo "Generating WDS config for interface wds${RTWIFI_IFPREFIX}${WDSBssidNum}"
+	ifname="wds${RTWIFI_IFPREFIX}${WDSBssidNum}"
+	echo "Generating WDS config for interface $ifname"
 	WDSEN=1
 	WDSList="${WDSList}${bssid};"
 	WDSEncType="${WDSEncType}${wdsenctype};"
@@ -302,7 +303,7 @@ mt_dbdc_ap_vif_post_config() {
 	local name="$1"
 
 	json_select config
-	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolated doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w
+	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w
 	json_select ..
 
 	[ "$disabled" == "1" ] && return
@@ -314,7 +315,7 @@ mt_dbdc_ap_vif_post_config() {
 
 	mt_cmd ifconfig $ifname up
 	mt_cmd echo "Interface $ifname now up."
-	mt_cmd iwpriv $ifname set NoForwarding=${isolated:-0}
+	mt_cmd iwpriv $ifname set NoForwarding=${isolate:-0}
 	mt_cmd iwpriv $ifname set IEEE80211H=${doth:-0}
 	
 	[ "$smart" == "1" ] && iwpriv $ifname set DynamicRaInterval=1
@@ -441,7 +442,7 @@ drv_mt_dbdc_teardown() {
 drv_mt_dbdc_setup() {
 	json_select config
 	json_get_vars main_if macaddr channel mode band hwmode wmm htmode \
-		txpower country macpolicy maclist greenap powersave hidessid bndstrg \
+		txpower country macfilter maclist greenap powersave hidessid bndstrg \
 		diversity beacon_int chanbw frag rts txburst distance hidden smart \
 		disabled maxassoc macpolicy maclist noscan ht_coex smart greenap \
 		rxantenna txantenna antenna_gain ht_capab scan_list #device所有配置项
