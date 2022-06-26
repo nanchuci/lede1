@@ -1650,7 +1650,7 @@ struct _build_ie_info {
 	UINT16 pos;
 };
 
-/* #ifdef HOSTAPD_OWE_SUPPORT
+#ifdef HOSTAPD_OWE_SUPPORT
 typedef struct GNU_PACKED _EXT_ECDH_PARAMETER_IE {
 	UCHAR ext_ie_id;
 	UCHAR length;
@@ -1658,7 +1658,7 @@ typedef struct GNU_PACKED _EXT_ECDH_PARAMETER_IE {
 	UINT16 group;
 	UCHAR public_key[128];
 } EXT_ECDH_PARAMETER_IE, *PEXT_ECDH_PARAMETER_IE;
-#endif */
+#endif
 
 struct _op_info {
 	UINT8 bw;
