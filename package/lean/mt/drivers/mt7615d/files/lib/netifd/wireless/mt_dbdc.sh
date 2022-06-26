@@ -424,14 +424,14 @@ drv_mt_dbdc_teardown() {
 		ra0)
 			killall -9 -q apcli_2g
 			for vif in ra0 ra1 ra2 ra3 ra4 ra5 ra6 ra7 wds0 wds1 wds2 wds3 apcli0; do
-				iwpriv $vif set DisConnectAllSta=1
+				# iwpriv $vif set DisConnectAllSta=1
 				[ -d "/sys/class/net/$vif" ] && ifconfig $vif down
 			done
 		;;
 		rax0)
 			killall -9 -q apcli_5g
 			for vif in rax0 rax1 rax2 rax3 rax4 rax5 rax6 rax7 wdsx0 wdsx1 wdsx2 wdsx3 apclix0; do
-				iwpriv $vif set DisConnectAllSta=1
+				# iwpriv $vif set DisConnectAllSta=1
 				[ -d "/sys/class/net/$vif" ] && ifconfig $vif down
 			done
 		;;
