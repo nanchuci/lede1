@@ -48,12 +48,12 @@ detect_mt_dbdc() {
 						;;
 				esac
 				
-				if [ -n "$macaddr" ]; then
-					dev_id="set wireless.${phyname}.macaddr=${macaddr}"
-				else
-					dev_id="set wireless.${phyname}.macaddr=$(cat /sys/class/ieee80211/${dev}/macaddress)"
-				fi
-				}
+#				if [ -n "$macaddr" ]; then
+#					dev_id="set wireless.${phyname}.macaddr=${macaddr}"
+#				else
+#					dev_id="set wireless.${phyname}.macaddr=$(cat /sys/class/ieee80211/${dev}/macaddress)"
+#				fi
+#				}
 
 				get_band_defaults() {
 					local phy="$1"
