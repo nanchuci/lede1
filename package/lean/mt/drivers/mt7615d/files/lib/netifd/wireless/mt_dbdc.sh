@@ -12,7 +12,6 @@
 # 	嘿，对着屏幕的哥们,为了表示对原作者辛苦工作的尊重，任何引用跟借用都不允许你抹去所有作者的信息,请保留这段话。
 #
 . /lib/netifd/netifd-wireless.sh
-. /lib/netifd/hostapd.sh
 
 init_wireless_driver "$@"
 
