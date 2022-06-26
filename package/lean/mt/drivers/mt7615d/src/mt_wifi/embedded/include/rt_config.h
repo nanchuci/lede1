@@ -231,6 +231,10 @@
 #include "security/pmf.h"
 #endif /* DOT11W_PMF_SUPPORT */
 
+#ifdef DPP_SUPPORT
+#include "action.h"
+#endif /* DPP_SUPPORT */
+
 #ifdef FTM_SUPPORT
 #include "ftm.h"
 #endif /* FTM_SUPPORT */
