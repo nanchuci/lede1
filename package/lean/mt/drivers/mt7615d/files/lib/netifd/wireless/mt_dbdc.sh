@@ -37,7 +37,7 @@ mt_cmd() {
 #读取device相关设置项并写入json
 drv_mt_dbdc_init_device_config() { 
 	hostapd_common_add_device_config
-	config_add_string channel band hwmode htmode country macaddr
+	config_add_string channel hwmode htmode country macaddr
 	config_add_string tx_burst
 	config_add_string distance
 	config_add_int beacon_int chanbw frag rts txburst
@@ -135,7 +135,7 @@ mt_dbdc_ap_vif_pre_config() {
 	local name="$1"
 
 	json_select config
-	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macpolicy
+	json_get_vars disabled encryption key key1 key2 key3 key4 ssid mode wps pin isolate doth hidden rssikick disassoc_low_ack rssiassoc ieee80211k ieee80211v ieee80211r ieee80211w macfilter
 	json_get_values maclist maclist
 	json_select ..
 	[ "$disabled" == "1" ] && return
@@ -333,8 +333,8 @@ mt_dbdc_ap_vif_post_config() {
 	[ -n "$rssiassoc" ]  && [ "$rssiassoc" != "0" ] && mt_cmd iwpriv $ifname set AssocReqRssiThres=$rssiassoc
 	[ -n "$ieee80211k" ]  && [ "$ieee80211k" != "0" ] && mt_cmd iwpriv $ifname set rrmenable=1
 	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmenable=1
-	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=ftsupport=1
-	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=ppenable=1
+	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=1 && ftsupport=1
+	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1 && ppenable=1
 	wireless_add_vif "$name" "$ifname"
 	json_get_vars bridge
 	[ -z `brctl show | grep $ifname` ] && [ ! -z $bridge ] && {
@@ -441,7 +441,7 @@ drv_mt_dbdc_teardown() {
 #接口启动
 drv_mt_dbdc_setup() {
 	json_select config
-	json_get_vars main_if macaddr channel mode band hwmode wmm htmode \
+	json_get_vars main_if macaddr channel mode hwmode wmm htmode \
 		txpower country macfilter maclist greenap powersave hidessid bndstrg \
 		diversity beacon_int chanbw frag rts txburst distance hidden smart \
 		disabled maxassoc macpolicy maclist noscan ht_coex smart greenap \
@@ -485,7 +485,7 @@ drv_mt_dbdc_setup() {
 			APCLI_IF="apcli0"
 			APCLI_APCTRL="apcli_2g"
 			RTWIFI_IFPREFIX=""
-			RTWIFI_DEF_BAND="2g"
+			RTWIFI_DEF_BAND="g"
 			RTWIFI_PROFILE_PATH="${RTWIFI_PROFILE_DIR}mt_dbdc_2g.dat"
 			RTWIFI_CMD_PATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_2g.sh"
 			RTWIFI_CMD_OPATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_5g.sh"
@@ -495,7 +495,7 @@ drv_mt_dbdc_setup() {
 			APCLI_IF="apclix0"
 			APCLI_APCTRL="apcli_5g"
 			RTWIFI_IFPREFIX="x"
-			RTWIFI_DEF_BAND="5g"
+			RTWIFI_DEF_BAND="a"
 			RTWIFI_PROFILE_PATH="${RTWIFI_PROFILE_DIR}mt_dbdc_5g.dat"
 			RTWIFI_CMD_PATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_5g.sh"
 			RTWIFI_CMD_OPATH="${RTWIFI_PROFILE_DIR}mt_dbdc_cmd_2g.sh"
@@ -521,21 +521,21 @@ drv_mt_dbdc_setup() {
 	[ ! -d $RTWIFI_PROFILE_DIR ] && mkdir $RTWIFI_PROFILE_DIR
 	echo > $RTWIFI_CMD_PATH
 
-	band=${band##11}
-	case "$band" in
-		5g)
+	hwmode=${hwmode##11}
+	case "$hwmode" in
+		a)
 			WirelessMode=14
 			ITxBfEn=1
 			HT_HTC=1
 		;;
-		2g)
+		g)
 			WirelessMode=9
 			ITxBfEn=1
 			HT_HTC=1
 		;;
 		*) 
 			echo "Unknown wireless mode.Use default value:${WirelessMode}"
-			band=${RTWIFI_DEF_BAND}
+			hwmode=${RTWIFI_DEF_BAND}
 		;;
 	esac
 	
@@ -580,7 +580,7 @@ drv_mt_dbdc_setup() {
 		;;
 		HE40 |\
 		HE80)
-			[ "$band" == "6g" ] && WirelessMode=17 || WirelessMode=16
+			[ "$hwmode" == "a" ] && WirelessMode=17 || WirelessMode=16
 			HT_BW=1
 			VHT_BW=1
 			HE_BW=1
@@ -611,8 +611,8 @@ drv_mt_dbdc_setup() {
       }
 
 #信道相关
-	case "$band" in
-		5g)
+	case "$hwmode" in
+		a)
 			EXTCHA=1
 			[ "$channel" != "auto" ] && [ "$channel" != "0" ] && [ "$(( ($channel / 4) % 2 ))" == "0" ] && EXTCHA=0
 			[ "$channel" == "165" ] && EXTCHA=0
@@ -625,7 +625,7 @@ drv_mt_dbdc_setup() {
 			}
 			ACSSKIP="36;38;40;42;44;46;48;52;56;60;64;100;104;108;112;116;120;124;128;132;136;140;165"
 		;;
-		2g)
+		g)
 			EXTCHA=0
 			[ "$channel" != "auto" ] && [ "$channel" != "0" ] && [ "$channel" -lt "7" ] && EXTCHA=1
 			[ "$channel" == "auto" -o "$channel" == "0" ] && {
@@ -1002,7 +1002,7 @@ WSC_UUID_Str1=d1087a18-aae3-b815-3a5b-001122221146
 WSC_UUID_E1=d1087a18aae3b8153a5b001122221146
 EOF
 
-#for 6g
+#for 11ax
 [ "$htmode" == "HE40" -o "$htmode" == "HE80" ] && {
 	cat >> $RTWIFI_PROFILE_PATH <<EOF
 TxCmdMode=1
