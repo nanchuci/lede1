@@ -105,7 +105,7 @@
 #ifdef MT7615
 #undef EEPROM_DEFAULT_FILE_PATH
 #define EEPROM_DEFAULT_FILE_PATH "/etc_ro/wlan/MT7615_EEPROM1.bin"
-#define EEPROM_DEFAULT_FILE_PATH "/dev/mtdblock2"
+#define EEPROM_DEFAULT_FILE_PATH "/dev/mtdblock3"
 #endif /* MT7615 */
 
 #endif /* EEPROM_DEFAULT_FILE_PATH */

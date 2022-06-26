@@ -462,21 +462,21 @@ config MTK_LINK_TEST_SUPPORT
 	depends on MTK_WIFI_DRIVER
 	default n
 
-#config MTK_LED_CONTROL_SUPPORT
-#	bool "LED Support"
-#	depends on MTK_WIFI_DRIVER
-#	depends on MTK_MT_AP_SUPPORT
-#	default n
+config MTK_LED_CONTROL_SUPPORT
+	bool "LED Support"
+	depends on MTK_WIFI_DRIVER
+	depends on MTK_MT_AP_SUPPORT
+	default n
 
 config MTK_ATE_SUPPORT
 	bool "ATE/QA Support"
 	depends on MTK_WIFI_DRIVER
 	default y
 
-#config MTK_MEMORY_OPTIMIZATION
-#	bool "Memory Optimization"
-#	depends on MTK_WIFI_DRIVER
-#	default n
+config MTK_MEMORY_OPTIMIZATION
+	bool "Memory Optimization"
+	depends on MTK_WIFI_DRIVER
+	default n
 
 config MTK_PASSPOINT_R2
 	bool "Passpoint Release-2 Support"
@@ -889,10 +889,10 @@ config MTK_FQ_SCH_SUPPORT
     depends on MTK_CHIP_MT7615E || MTK_CHIP_MT7622
     default y
 
-#config MTK_AIRPLAY_SUPPORT
-#	bool "AIRPLAY Support"
-#	depends on MTK_MT_AP_SUPPORT
-#	default n
+config MTK_AIRPLAY_SUPPORT
+	bool "AIRPLAY Support"
+	depends on MTK_MT_AP_SUPPORT
+	default n
 
 config MTK_BAND_STEERING
 	bool "Band Steering"
@@ -959,9 +959,9 @@ config MTK_WIFI_MSI_SUPPORT
 #	depends on MTK_APCLI_SUPPORT
 #	default n
 
-#config MTK_WIFI_FWD_SUPPORT
-#        bool "WiFi Forwarding Support"
-#        default n
+config MTK_WIFI_FWD_SUPPORT
+        bool "WiFi Forwarding Support"
+        default n
 
 config MTK_WPA3_SUPPORT
 	bool "WPA3 support"

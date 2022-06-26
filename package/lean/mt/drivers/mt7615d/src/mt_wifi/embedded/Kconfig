@@ -331,21 +331,21 @@ config LINK_TEST_SUPPORT
 	depends on WIFI_DRIVER
 	default y
 
-#config LED_CONTROL_SUPPORT
-#	bool "LED Support"
-#	depends on WIFI_DRIVER
-#	depends on MT_AP_SUPPORT
-#	default n
+config LED_CONTROL_SUPPORT
+	bool "LED Support"
+	depends on WIFI_DRIVER
+	depends on MT_AP_SUPPORT
+	default n
 
 config ATE_SUPPORT
 	bool "ATE/QA Support"
 	depends on WIFI_DRIVER
 	default y	
 
-#config MEMORY_OPTIMIZATION
-#	bool "Memory Optimization"
-#	depends on WIFI_DRIVER
-#	default n
+config MEMORY_OPTIMIZATION
+	bool "Memory Optimization"
+	depends on WIFI_DRIVER
+	default n
 
 config PASSPOINT_R2
 	bool "Passpoint Release-2 Support"

@@ -277,10 +277,10 @@ config VOW_SUPPORT
 	depends on MT_AP_SUPPORT
 	default y
 
-#config AIRPLAY_SUPPORT
-#	bool "AIRPLAY Support"
-#	depends on MT_AP_SUPPORT
-#	default n
+config AIRPLAY_SUPPORT
+	bool "AIRPLAY Support"
+	depends on MT_AP_SUPPORT
+	default n
 
 config BAND_STEERING
 	bool "Band Steering"
@@ -349,9 +349,9 @@ config WIFI_MSI_SUPPORT
 #	depends on APCLI_SUPPORT
 #	default n
 
-#config WIFI_FWD_SUPPORT
-#        bool "WiFi Forwarding Support"
-#        default n
+config WIFI_FWD_SUPPORT
+        bool "WiFi Forwarding Support"
+        default n
 
 config WPA3_SUPPORT
 	bool "WPA3 support"
