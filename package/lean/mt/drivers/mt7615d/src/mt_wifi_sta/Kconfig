@@ -15,10 +15,10 @@ config COEX_SUPPORT
 	depends on MT_STA_SUPPORT
 	default n
 
-#config MUMIMO_SUPPORT
-#        bool "MU-MIMO Support"
-#        depends on WIFI_DRIVER
-#        default y
+config MUMIMO_SUPPORT
+        bool "MU-MIMO Support"
+        depends on WIFI_DRIVER
+        default y
 
 #config DOT11R_FT_SUPPORT
 #	bool "802.11r Fast BSS Transition"
