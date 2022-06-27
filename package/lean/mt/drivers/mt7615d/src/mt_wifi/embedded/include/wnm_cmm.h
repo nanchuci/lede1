@@ -23,7 +23,4 @@
 #ifndef __WNM_CONFIG_H__
 #define __WNM_CONFIG_H__
 
-#include "rtmp_type.h"
-#include "dot11v_wnm.h"
-
 #endif /* __WNM_CONFIG_H__ */

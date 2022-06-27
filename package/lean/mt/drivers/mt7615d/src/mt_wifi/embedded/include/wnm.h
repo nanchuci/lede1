@@ -28,9 +28,6 @@
 #ifndef __WNM_H__
 #define __WNM_H__
 
-#ifdef DOT11V_WNM_SUPPORT
-#include "rtmp_type.h"
-#include "wnm_cmm.h"
 #include "ipv6.h"
 #include "mat.h"
 
@@ -385,7 +382,4 @@ void SendBTMQueryEvent(PNET_DEV net_dev, const char *peer_mac_addr,
 void SendWNMNotifyEvent(PNET_DEV net_dev, const char *peer_mac_addr,
 			const char *wnm_req, UINT16 wnm_req_len);
 #endif
-
-#endif /* DOT11K_RRM_SUPPORT */
-
 #endif /* __WNM_H__ */

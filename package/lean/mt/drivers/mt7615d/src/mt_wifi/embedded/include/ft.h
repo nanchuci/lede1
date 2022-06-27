@@ -24,7 +24,6 @@
 #define __FT_H
 
 #include "common/link_list.h"
-#include "rtmp_type.h"
 #include "ft_cmm.h"
 
 #define IN
