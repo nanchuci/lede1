@@ -889,10 +889,10 @@ config MTK_FQ_SCH_SUPPORT
     depends on MTK_CHIP_MT7615E || MTK_CHIP_MT7622
     default y
 
-config MTK_AIRPLAY_SUPPORT
-	bool "AIRPLAY Support"
-	depends on MTK_MT_AP_SUPPORT
-	default n
+#config MTK_AIRPLAY_SUPPORT
+#	bool "AIRPLAY Support"
+#	depends on MTK_MT_AP_SUPPORT
+#	default n
 
 config MTK_BAND_STEERING
 	bool "Band Steering"
