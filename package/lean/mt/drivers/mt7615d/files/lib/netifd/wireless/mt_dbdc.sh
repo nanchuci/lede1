@@ -331,7 +331,7 @@ mt_dbdc_ap_vif_post_config() {
 	[ -n "$rssikick" ]  && [ "$rssikick" != "0" ] && mt_cmd iwpriv $ifname set KickStaRssiLow=$rssikick
 	[ -n "$rssiassoc" ]  && [ "$rssiassoc" != "0" ] && mt_cmd iwpriv $ifname set AssocReqRssiThres=$rssiassoc
 	[ -n "$ieee80211k" ]  && [ "$ieee80211k" != "0" ] && mt_cmd iwpriv $ifname set rrmenable=1
-	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmenable=1
+	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmbtmenable=1
 	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=1 && ftsupport=1
 	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1 && ppenable=1
 	wireless_add_vif "$name" "$ifname"
@@ -648,7 +648,7 @@ CountryRegion=${countryregion:-5}
 CountryRegionABand=${countryregion_a:-7}
 CountryCode=${country:-CN};${country:-CN}
 RRMEnable=${RRMEnable:-0};${RRMEnable:-0};${RRMEnable:-0};${RRMEnable:-0}
-WNMEnable=${WNMEnable:-0};${WNMEnable:-0};${WNMEnable:-0};${WNMEnable:-0}
+WNMBTMEnable=${WNMBTMEnable:-0};${WNMBTMEnable:-0};${WNMBTMEnable:-0};${WNMBTMEnable:-0}
 FTEnable=${FTEnable:-0};${FTEnable:-0};${FTEnable:-0};${FTEnable:-0}
 PMFenable=${PMFenable:-0};${PMFenable:-0};${PMFenable:-0};${PMFenable:-0}
 WHNAT=1
