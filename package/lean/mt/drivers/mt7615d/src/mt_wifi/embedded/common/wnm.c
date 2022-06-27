@@ -2565,8 +2565,6 @@ void WNM_ReadParametersFromFile(IN PRTMP_ADAPTER pAd, RTMP_STRING *tmpbuf,
 			Enable = simple_strtol(macptr, 0, 10);
 			pAd->ApCfg.MBSSID[loop].WNMCtrl.WNMBTMEnable =
 				(Enable > 0) ? TRUE : FALSE;
-			pAd->ApCfg.MBSSID[loop].WNMCtrl.WNMBTMEnableSet =
-				TRUE;
 			MTWF_LOG(
 				DBG_CAT_PROTO, CATPROTO_RRM, DBG_LVL_TRACE,
 				("%s::(bDot11vWNMEnable[%d]=%d)\n", __func__,
