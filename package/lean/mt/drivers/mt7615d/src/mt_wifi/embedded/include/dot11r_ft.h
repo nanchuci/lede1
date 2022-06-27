@@ -28,6 +28,7 @@
 #ifndef __DOT11R_FT_H
 #define __DOT11R_FT_H
 
+#ifdef DOT11R_FT_SUPPORT
 #include "rtmp_type.h"
 
 #if defined(DOT11R_FT_SUPPORT) || defined(DOT11K_RRM_SUPPORT)

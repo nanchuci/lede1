@@ -333,6 +333,8 @@ LD := $(CROSS_COMPILE)ld
 WFLAGS := -Wall -Wstrict-prototypes -Wno-trigraphs -Werror -Wno-date-time
 WFLAGS += -DAGGREGATION_SUPPORT -DPIGGYBACK_SUPPORT -DWMM_SUPPORT  -DLINUX -DENHANCED_STAT_DISPLAY
 WFLAGS += -DSYSTEM_LOG_SUPPORT -DRT28xx_MODE=$(RT28xx_MODE) -DCHIPSET=$(MODULE)
+WFLAGS += -Wno-error=date-time
+WFLAGS += -Wno-error=incompatible-pointer-types
 #WFLAGS += -DDBG_DIAGNOSE -DDBG_RX_MCS -DDBG_TX_MCS
 WFLAGS += -DOLDSEC
 #APsoc Specific

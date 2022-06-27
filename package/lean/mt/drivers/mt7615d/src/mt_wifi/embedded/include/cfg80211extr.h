@@ -142,7 +142,7 @@
 #define P2P_NOA_TX_ON 0x01
 #define P2P_NOA_RX_ON 0x02
 
-//#define WLAN_AKM_SUITE_8021X		0x000FAC01
+#define WLAN_AKM_SUITE_8021X 0x000FAC01
 #define WDEV_NOT_FOUND -1
 
 /* Scan Releated */

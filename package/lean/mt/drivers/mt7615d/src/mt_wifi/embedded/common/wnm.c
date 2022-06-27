@@ -26,6 +26,8 @@
 	--------    ----------    ----------------------------------------------
 */
 
+#ifdef DOT11K_WNM_SUPPORT
+
 #include "rt_config.h"
 
 static UCHAR ZERO_IP_ADDR[4] = { 0x00, 0x00, 0x00, 0x00 };
@@ -2565,6 +2567,8 @@ void WNM_ReadParametersFromFile(IN PRTMP_ADAPTER pAd, RTMP_STRING *tmpbuf,
 			Enable = simple_strtol(macptr, 0, 10);
 			pAd->ApCfg.MBSSID[loop].WNMCtrl.WNMBTMEnable =
 				(Enable > 0) ? TRUE : FALSE;
+			pAd->ApCfg.MBSSID[loop].WNMCtrl.WNMBTMEnableSet =
+				TRUE;
 			MTWF_LOG(
 				DBG_CAT_PROTO, CATPROTO_RRM, DBG_LVL_TRACE,
 				("%s::(bDot11vWNMEnable[%d]=%d)\n", __func__,
@@ -2677,7 +2681,7 @@ void PeerWNMAction(IN PRTMP_ADAPTER pAd, IN MLME_QUEUE_ELEM *Elem)
 VOID WNMCtrlInit(IN PRTMP_ADAPTER pAd)
 {
 	PWNM_CTRL pWNMCtrl;
-	BOOLEAN WNMBTMEnable = TRUE;
+	BOOLEAN WNMBTMEnable = FALSE;
 #ifdef CONFIG_AP_SUPPORT
 	UCHAR APIndex;
 #endif /* CONFIG_AP_SUPPORT */
