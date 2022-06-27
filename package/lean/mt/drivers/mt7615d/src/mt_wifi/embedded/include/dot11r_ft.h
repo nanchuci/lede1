@@ -319,6 +319,7 @@ typedef struct GNU_PACKED __FT_RRB {
 	UINT8 APAdr[MAC_ADDR_LEN];
 	UINT8 Oct[0];
 } FT_RRB, *PFT_RRB;
+
 #endif /* DOT11R_FT_SUPPORT */
 
 #endif /* __DOT11R_FT_H */

@@ -183,6 +183,10 @@
 #include "rrm.h"
 #endif /* DOT11K_RRM_SUPPORT */
 
+#ifdef DOT11V_WNM_SUPPORT
+#include "wnm.h"
+#endif /* DOT11V_WNM_SUPPORT */
+
 #ifdef MBO_SUPPORT
 #include "mbo.h"
 #endif /* MBO_SUPPORT */

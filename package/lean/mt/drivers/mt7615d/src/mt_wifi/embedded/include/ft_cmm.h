@@ -28,6 +28,7 @@
 #ifndef __FT_CMM_H__
 #define __FT_CMM_H__
 
+#include "rtmp_type.h"
 #include "dot11r_ft.h"
 #include "security/dot11i_wpa.h"
 

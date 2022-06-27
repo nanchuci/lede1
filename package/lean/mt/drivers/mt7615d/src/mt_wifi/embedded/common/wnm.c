@@ -29,6 +29,7 @@
 #ifdef DOT11K_WNM_SUPPORT
 
 #include "rt_config.h"
+#include "wnm.h"
 
 static UCHAR ZERO_IP_ADDR[4] = { 0x00, 0x00, 0x00, 0x00 };
 
@@ -3920,3 +3921,5 @@ VOID WNMNotifyStateMachineInit(IN PRTMP_ADAPTER pAd, IN STATE_MACHINE *S,
 			      (STATE_MACHINE_FUNC)SendWNMNotifyConfirm);
 #endif /* CONFIG_AP_SUPPORT */
 }
+
+#endif /* DOT11V_WNM_SUPPORT */
