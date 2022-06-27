@@ -26,6 +26,9 @@
 #ifndef __DOT11V_WNM_H__
 #define __DOT11V_WNM_H__
 
+#ifndef CONFIG_DOT11V_WNM
+#include "rtmp_type.h"
+
 #define WNM_BSS_PERFERENCE_SUBIE 3
 #define WNM_BSS_TERMINATION_SUBIE 4
 
@@ -100,4 +103,5 @@ typedef struct GNU_PACKED _WNM_FRAME {
 
 void PeerWNMAction(IN struct _RTMP_ADAPTER *pAd, IN MLME_QUEUE_ELEM *Elem);
 
+#endif
 #endif /* __DOT11V_WNM_H__ */
