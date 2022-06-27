@@ -288,7 +288,6 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DATA) ./files/etc/uci-defaults/10_mt7615_dbdc $(1)/etc/uci-defaults/10_mt7615_dbdc
 	$(INSTALL_DATA) ./src/bin/mt7615/99-hwacc $(1)/etc/uci-defaults/
 	$(INSTALL_DATA) ./src/bin/mt7615/luci-hwacc $(1)/etc/uci-defaults/
-	$(INSTALL_DATA) ./src/bin/mt7615/luci-i18n-hwacc-zh-cn $(1)/etc/uci-defaults/
 	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_cr4.bin $(1)/lib/firmware/mediatek/
 	$(INSTALL_DATA) ./src/bin/mt7615/mt7615_patch_e3_hdr.bin $(1)/lib/firmware/mediatek/
 	$(INSTALL_DATA) ./src/bin/mt7615/WIFI_RAM_CODE_MT7615.bin $(1)/lib/firmware/mediatek/
