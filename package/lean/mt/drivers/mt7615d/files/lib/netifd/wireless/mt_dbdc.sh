@@ -12,6 +12,7 @@
 # 	嘿，对着屏幕的哥们,为了表示对原作者辛苦工作的尊重，任何引用跟借用都不允许你抹去所有作者的信息,请保留这段话。
 #
 . /lib/netifd/netifd-wireless.sh
+. /lib/netifd/hostapd.sh
 
 init_wireless_driver "$@"
 
@@ -44,7 +45,7 @@ drv_mt_dbdc_init_device_config() {
 	config_add_boolean greenap diversity noscan ht_coex smart
 	config_add_int powersave
 	config_add_int maxassoc
-	config_add_boolean hidessid bndstrg
+	config_add_boolean hidessid bndstrg mu-mimo
 	config_add_array ht_capab
 	config_add_array channels
 	config_add_array scan_list
@@ -331,9 +332,9 @@ mt_dbdc_ap_vif_post_config() {
 	[ -n "$rssikick" ]  && [ "$rssikick" != "0" ] && mt_cmd iwpriv $ifname set KickStaRssiLow=$rssikick
 	[ -n "$rssiassoc" ]  && [ "$rssiassoc" != "0" ] && mt_cmd iwpriv $ifname set AssocReqRssiThres=$rssiassoc
 	[ -n "$ieee80211k" ]  && [ "$ieee80211k" != "0" ] && mt_cmd iwpriv $ifname set rrmenable=1
-	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmbtmenable=1
-	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=1 && ftsupport=1
-	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1 && ppenable=1
+	[ -n "$ieee80211v" ]  && [ "$ieee80211v" != "0" ] && mt_cmd iwpriv $ifname set wnmenable=1
+	[ -n "$ieee80211r" ]  && [ "$ieee80211r" != "0" ] && mt_cmd iwpriv $ifname set ftenable=1
+	[ -n "$ieee80211w" ]  && [ "$ieee80211w" != "0" ] && mt_cmd iwpriv $ifname set pmfenable=1
 	wireless_add_vif "$name" "$ifname"
 	json_get_vars bridge
 	[ -z `brctl show | grep $ifname` ] && [ ! -z $bridge ] && {
@@ -648,9 +649,9 @@ CountryRegion=${countryregion:-5}
 CountryRegionABand=${countryregion_a:-7}
 CountryCode=${country:-CN};${country:-CN}
 RRMEnable=${RRMEnable:-0};${RRMEnable:-0};${RRMEnable:-0};${RRMEnable:-0}
-WNMBTMEnable=${WNMBTMEnable:-0};${WNMBTMEnable:-0};${WNMBTMEnable:-0};${WNMBTMEnable:-0}
+WNMEnable=${WNMEnable:-1};${WNMEnable:-1};${WNMEnable:-1};${WNMEnable:-1}
 FTEnable=${FTEnable:-0};${FTEnable:-0};${FTEnable:-0};${FTEnable:-0}
-PMFenable=${PMFenable:-0};${PMFenable:-0};${PMFenable:-0};${PMFenable:-0}
+PMFEnable=${PMFEnable:-0};${PMFEnable:-0};${PMFEnable:-0};${PMFEnable:-0}
 WHNAT=1
 WirelessMode=${WirelessMode}
 E2pAccessMode=2
@@ -682,7 +683,7 @@ PktAggregate=1
 AutoProvisionEn=0
 FreqDelta=0
 TurboRate=0
-WmmCapable=${wmm:-0};${wmm:-0}
+Wmm=${wmm:-0};${wmm:-0}
 APAifsn=3;7;1;1
 APCwmin=4;4;3;2
 APCwmax=6;10;4;3
@@ -713,7 +714,7 @@ ITxBfTimeout=0
 ETxBfTimeout=0
 ETxBfNoncompress=0
 ETxBfIncapable=0
-MUTxRxEnable=${MU_MIMO:-0};${MU_MIMO:-1}
+MU_MIMO=${MU_MIMO:-0};${MU_MIMO:-1}
 FineAGC=0
 StreamMode=0
 StreamModeMac0=
@@ -862,7 +863,7 @@ Ethifname=
 EAPifname=br-lan
 PreAuthifname=br-lan
 session_timeout_interval=0
-PPEnable=${PPEnable:-0};${PPEnable:-0};${PPEnable:-0};${PPEnable:-0}
+DPPEnable=${DPPEnable:-0};${DPPEnable:-0};${DPPEnable:-0};${DPPEnable:-0}
 idle_timeout_interval=0
 WiFiTest=0
 TGnWifiTest=0
@@ -971,7 +972,7 @@ SkipLongRangeVga=0
 VgaClamp=0
 FastRoaming=0
 AutoRoaming=0
-FtSupport=${FtSupport:-0};${FtSupport:-0};${FtSupport:-0};${FtSupport:-0}
+FtSupport=${FtSupport:-1};${FtSupport:-1};${FtSupport:-1};${FtSupport:-1}
 FtRic=1;1;1;1
 FtOtd=0;0;0;0
 FtMdId1=A1
