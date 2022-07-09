@@ -67,6 +67,8 @@ detect_mt_dbdc() {
 					set wireless.${phyname}.txburst=1
 					set wireless.${phyname}.noscan=$noscan
 					set wireless.${phyname}.smart=$pb_smart
+					set wireless.${phyname}.mu_beamformer=1
+					set wireless.${phyname}.wmm=1
 
 					set wireless.default_${phyname}=wifi-iface
 					set wireless.default_${phyname}.device=${phyname}

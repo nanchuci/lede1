@@ -10,7 +10,7 @@ PKG_NAME:=mt7615d
 P4REV:=9
 PKG_VERSION:=5.1.0.0
 
-PKG_BUILD_PARALLEL:=1
+PKG_BUILD_PARALLEL:=2
 
 PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/$(PKG_NAME)
 PKG_KCONFIG:= \
@@ -274,11 +274,11 @@ define KernelPackage/mt7615d_dbdc/install
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek/iPAeLNA/
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek/iPAiLNA/
 	$(INSTALL_DIR) $(1)/lib/wifi $(1)/lib/netifd/wireless $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./src/bin/mt7615/SingleSKU.dat $(1)/etc_ro/Wireless/RT2860AP/
-	$(INSTALL_BIN) ./src/bin/mt7615/SingleSKU_BF.dat $(1)/etc_ro/Wireless/RT2860AP/
+	$(INSTALL_DATA) ./src/bin/mt7615/mt7615e-sku.dat $(1)/etc_ro/Wireless/RT2860AP/SingleSKU.dat
+	$(INSTALL_DATA) ./src/bin/mt7615/mt7615e-sku-bf.dat $(1)/etc_ro/Wireless/RT2860AP/SingleSKU_BF.dat
 	$(INSTALL_BIN) ./src/bin/mt7615/wps_pbc $(1)/bin/
-	$(INSTALL_BIN) ./src/bin/mt7615/l1profile.dat $(1)/etc/wireless/
-	$(INSTALL_BIN) ./src/bin/mt7615/MT7615_EEPROM1.bin $(1)/etc_ro/wlan/
+	$(INSTALL_DATA) ./src/bin/mt7615/l1profile.dat $(1)/etc/wireless/
+	$(INSTALL_DATA) ./src/bin/mt7615/MT7615_EEPROM1.bin $(1)/etc_ro/wlan/
 	$(INSTALL_BIN) ./src/bin/mt7615/11-mtk-wifi-e2p $(1)/etc/hotplug.d/firmware/
 	$(INSTALL_DATA) ./src/bin/mt7615/hwacc0 $(1)/etc/config/
 	$(INSTALL_DATA) ./src/bin/mt7615/002-hwacc $(1)/etc/hotplug.d/net/
