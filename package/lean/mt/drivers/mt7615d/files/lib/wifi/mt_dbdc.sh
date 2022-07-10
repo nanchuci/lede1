@@ -45,8 +45,6 @@ detect_mt_dbdc() {
 						ssid="OpenWRT-5G-$(maccalc add $macaddr 3145728 | awk -F ":" '{print $4""$5""$6 }'| tr a-z A-Z)"
 						pb_smart=0
 						noscan=1
-						MU_MIMO=1
-						wmm=1
 						;;
 				esac
 				
@@ -67,8 +65,6 @@ detect_mt_dbdc() {
 					set wireless.${phyname}.txburst=1
 					set wireless.${phyname}.noscan=$noscan
 					set wireless.${phyname}.smart=$pb_smart
-					set wireless.${phyname}.mu_beamformer=1
-					set wireless.${phyname}.wmm=1
 
 					set wireless.default_${phyname}=wifi-iface
 					set wireless.default_${phyname}.device=${phyname}
