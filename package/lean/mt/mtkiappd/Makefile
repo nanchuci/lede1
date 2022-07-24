@@ -31,6 +31,8 @@ define Package/mtkiappd/config
 config PACKAGE_mtkiappd_DUAL_BAND
         bool "dual band"
 		depends on MTK_CHIP_MT7615E
+		default y if TARGET_ramips_mt7621_DEVICE_glinet_gl-mt1300
+		default y if TARGET_ramips_mt7621_DEVICE_jcg_y2
 		default y if TARGET_ramips_mt7621_DEVICE_phicomm_k2p
 		default y if TARGET_ramips_mt7621_DEVICE_raisecom_msg1500-x-00
 		default n

@@ -5,6 +5,7 @@
 # Copyright (c) 2005-2015, lintel <lintel.huang@gmail.com>
 # Copyright (c) 2013, Hoowa <hoowa.sun@gmail.com>
 # Copyright (c) 2015-2017, GuoGuo <gch981213@gmail.com>
+# Copyright (c) 2021-2022, Nanchuci <nanchuci023gmail.com>
 #
 # 	Detect script for MT7615 DBDC mode
 #
@@ -19,6 +20,7 @@ append DRIVERS "mt_dbdc"
 mt_get_first_if_mac() {
 	local wlan_mac=""
 	factory_part=$(find_mtd_part factory)
+	[ -z "$factory_part" ] && factory_part=$(find_mtd_part Factory)
 	dd bs=1 skip=4 count=6 if=$factory_part 2>/dev/null | /usr/sbin/maccalc bin2mac	
 }
 
@@ -38,7 +40,7 @@ detect_mt_dbdc() {
 						ssid="OpenWRT-2.4G-$(echo $macaddr | awk -F ":" '{print $4""$5""$6 }'| tr a-z A-Z)"
 						;;
 					rax0)
-						hwmode=11a
+						hwmode=11ac
 						htmode=VHT80
 						ssid="OpenWRT-5G-$(maccalc add $macaddr 3145728 | awk -F ":" '{print $4""$5""$6 }'| tr a-z A-Z)"
 						pb_smart=0
@@ -46,8 +48,11 @@ detect_mt_dbdc() {
 						;;
 				esac
 				
-#				[ -n "$macaddr" ] && {
+#				if [ -n "$macaddr" ]; then
 #					dev_id="set wireless.${phyname}.macaddr=${macaddr}"
+#				else
+#					dev_id="set wireless.${phyname}.macaddr=$(cat /sys/class/ieee80211/${dev}/macaddress)"
+#				fi
 #				}
 				uci -q batch <<-EOF
 					set wireless.${phyname}=wifi-device

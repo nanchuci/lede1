@@ -85,6 +85,10 @@ ipq40xx_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"0t@eth0" "3:lan" "5:wan"
 		;;
+	zte,mf263)
+		ucidef_add_switch "switch0" \
+			"0t@eth0" "3:lan" "5:wan"
+		;;
 	mobipromo,cm520-79f)
 		ucidef_add_switch "switch0" \
 			"0t@eth0" "3:lan:2" "4:lan:1" "5:wan"

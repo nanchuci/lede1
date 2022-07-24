@@ -1,0 +1,10 @@
+#!/bin/sh /etc/rc.common
+
+START=19
+
+start() {
+	 [ ! -f /etc/config/wireless ] && {
+                # compat mtkwifi
+                wifi config
+     }
+}

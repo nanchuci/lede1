@@ -1,8 +1,8 @@
 SRCS=main.o
 apcli:$(SRCS)
 	$(CC) $(LDFLAGS) $(SRCS) -liwinfo -o apcli
-	ln -s apcli apcli_2g
-	ln -s apcli apcli_5g
+	ln -s /sbin/apcli apcli_2g
+	ln -s /sbin/apcli apcli_5g
 
 main.o:main.c
 	$(CC) $(CFLAGS) -c main.c

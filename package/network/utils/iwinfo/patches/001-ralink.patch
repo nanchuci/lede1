@@ -1484,8 +1484,8 @@
  
  %.o: %.c
  	$(CC) $(IWINFO_CFLAGS) $(FPIC) -c -o $@ $<
---- a/hardware.txt
-+++ b/hardware.txt
+--- a/devices.txt
++++ b/devices.txt
 @@ -173,6 +173,36 @@
  0x1814 0x3662 0x1814 0x000d    0      0  "Ralink"   "Rt3662"
  0x1814 0x3883 0x1814 0x000d    0      0  "Ralink"   "Rt3883"

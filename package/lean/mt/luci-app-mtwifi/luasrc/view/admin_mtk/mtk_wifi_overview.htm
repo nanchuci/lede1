@@ -15,12 +15,12 @@ local devs = mtkwifi.get_all_devs()
 
     <div id="loading" style="margin-top: 1em; display: none;">
     <img src="<%=resource%>/icons/loading.gif" alt="<%:Loading%>" style="vertical-align:e;" />
-        &nbsp;&nbsp;&nbsp; Please waiting while the page is loading......
+        &nbsp;&nbsp;&nbsp; 页面加载中，请稍候......
     </div>
 
     <% if #devs == 0 then %>
     <fieldset class="cbi-section">
-        <legend>No wireless device found.</legend>
+        <legend>找不到无线设备.</legend>
     </fieldset>
     <% end %>
 
@@ -37,6 +37,11 @@ local devs = mtkwifi.get_all_devs()
                         <big><strong title="<%=dev.profile%>"> Generic Mediatek <%=dev.devname%></strong></big>
                         <%
                         local diff = mtkwifi.diff_profile(dev.profile)
+                        if next(diff) ~= nil then
+                        %>
+                            <span style="color:red;">* 请重启无线或重启路由器以应用更改</span>
+                        <% 
+                        end
                         %>
                         <br/>
                         <span><strong>模式:</strong>  <% if dev.ApCliEnable == "1" then %> APCli <% else %> Master AP<% end %> </span>
@@ -62,9 +67,9 @@ local devs = mtkwifi.get_all_devs()
                     <td class="cbi-value-field" style="vertical-align:middle; text-align:left; padding:3px"><strong>接口:</strong> <%=vif.vifname%> | <strong>无线名称:</strong> <%=vif.__ssid%> | <strong>信道:</strong> <%=vif.__channel or dev.Channel%>
                         <br/>
                         <% if vif.state == "up" then %>
-                        <strong>BSSID:</strong>:<%=vif.__bssid%> | <strong>无线模式:</strong> <%=dev.WirelessModeList[tonumber(vif.__wirelessmode or dev.WirelessMode)]%>
+                        <strong>MAC地址:</strong>:<%=vif.__bssid%> | <strong>无线模式:</strong> <%=dev.WirelessModeList[tonumber(vif.__wirelessmode or dev.WirelessMode)]%>
                         <% else %>
-                        Wireless is disabled or not associated
+                        无线功能已禁用或未关联
                         <% end %>
                     </td>
                     <td class="cbi-value-field" style="text-align:right">

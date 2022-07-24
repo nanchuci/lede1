@@ -73,6 +73,10 @@ ramips_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"0:lan" "1:lan" "2:lan" "3:lan" "4:wan" "6u@eth0" "5u@eth1"
 		;;
+	asus,rt-ac85p)
+		ucidef_add_switch "switch0" \
+			"1:lan:1" "2:lan:2" "3:lan:3" "4:lan:4" "0:wan:5" "6u@eth0" "5u@eth1"
+		;;
 	raisecom,msg1500-x-00)
 		ucidef_add_switch "switch0" \
 			"0:lan:4" "1:lan:3" "2:lan:2" "3:lan:1" "4:wan:5" "6u@eth0" "5u@eth1"
@@ -195,8 +199,8 @@ ramips_setup_macs()
 		lan_mac=$(macaddr_add $label_mac 1)
 		;;
 	raisecom,msg1500-x-00)
-		wan_mac=$(mtd_get_mac_ascii Config protest_wan_mac)
-		lan_mac=$(macaddr_add "$wan_mac" -3)
+		lan_mac=$(mtd_get_mac_binary factory 0xe000)
+		wan_mac=$(macaddr_add "$lan_mac" +3)
 		label_mac=$lan_mac
 		;;
 	xiaomi,mi-router-cr660x)

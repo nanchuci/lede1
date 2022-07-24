@@ -14,10 +14,10 @@ define Package/mtk_apcli
 endef
 
 define Package/mtk_apcli/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/apcli $(1)/usr/bin/
-	$(CP) $(PKG_BUILD_DIR)/apcli_2g $(1)/usr/bin/
-	$(CP) $(PKG_BUILD_DIR)/apcli_5g $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/apcli $(1)/sbin/
+	$(CP) $(PKG_BUILD_DIR)/apcli_2g $(1)/sbin/
+	$(CP) $(PKG_BUILD_DIR)/apcli_5g $(1)/sbin/
 endef
 
 $(eval $(call BuildPackage,mtk_apcli))
